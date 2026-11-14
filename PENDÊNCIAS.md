@@ -1,4 +1,4 @@
-# Pendências — BH Key Distribuidora (v1)
+# Pendências — BH Key Distribuidora (v2)
 
 O que precisa vir do cliente **antes de publicar**. Nada disso foi inventado no
 site: aparece como "A definir" / "sobre consulta" / aviso de amostra.
@@ -50,11 +50,18 @@ Depois de trocar: `npm run build`.
 
 ## 7. Fotos dos produtos — 🟡
 
-- **Hoje:** recortes dos prints do Instagram do cliente (`public/img/produtos/`),
-  usados como placeholder.
-- **Necessário:** fotos reais dos produtos, fundo neutro, boa resolução.
-- **Nota:** dois recortes atuais são fracos — `det-remotos-2.jpg` (aparece um
-  dedo) e `det-maos-pacotes.jpg` (borrado). Vale substituir junto.
+- **Hoje (v2):** fotos reais de catálogos públicos de distribuidoras, com fundo
+  branco e 1000×1000, prefixo `v2-` em `public/img/produtos/` (14),
+  `public/img/categorias/` (4) e `public/img/v2-hero.jpg`. Os recortes do
+  Instagram da v1 foram apagados. Origem de cada uma em `v2-arte/ARTE.md`.
+- **Necessário:** fotos próprias da loja. Ao chegar, substituir os arquivos
+  **com os mesmos nomes** e rodar `npm run build` — nada mais muda.
+- **Nota (foto errada):** `v2-controle-remoto-2-botoes-dobravel.jpg` mostra um
+  remoto de **3 botões** para um item "2 botões com chave dobrável". É a foto
+  mais próxima que existe na pasta (a chave dobrável está correta); trocar quando
+  a loja mandar a foto do item real.
+- **Nota (normalização):** `v2-braco-chave-em-branco.jpg` tinha fundo de papel
+  cinza; foi segmentado para branco preservando o recorte e a geometria.
 
 ## 8. Bloco de destaque — 🟢 opcional
 

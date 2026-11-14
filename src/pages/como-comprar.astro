@@ -12,31 +12,26 @@ const PASSOS = [
     titulo: 'Navegue pelo catálogo',
     texto:
       'Abra o catálogo, filtre por categoria e busque pelo nome ou pelo código do item. Cada produto tem foto, código e descrição.',
-    icon: 'list-magnifying-glass',
   },
   {
     titulo: 'Monte a sua lista',
     texto:
       'Use o botão “Pedir no WhatsApp” em cada item: a mensagem já sai com o código e o nome. Se preferir, copie os códigos e mande tudo de uma vez.',
-    icon: 'list-checks',
   },
   {
     titulo: 'Confirme a disponibilidade',
     texto:
       'A BH Key confirma o que está disponível e o valor de cada item. Preço sob consulta — nada é publicado na página.',
-    icon: 'chat-text',
   },
   {
     titulo: 'Pague via PIX',
     texto:
       'Depois de confirmado o pedido, o pagamento é feito via PIX.',
-    icon: 'currency-circle-dollar',
   },
   {
     titulo: 'Receba o envio',
     texto:
       'O envio é feito para todo o Brasil. Prazo e custo são combinados no atendimento.',
-    icon: 'truck',
   },
 ];
 
@@ -51,61 +46,55 @@ const RESUMO = [
   title="Como comprar — BH Key Distribuidora"
   description="Passo a passo para comprar material para chaveiro na BH Key: navegar no catálogo, enviar a lista pelo WhatsApp, confirmar disponibilidade, pagar via PIX e receber o envio."
 >
-  <div class="shell py-10 sm:py-14">
-    <Regua esquerda="Como comprar" direita={`${PASSOS.length} passos`} />
-    <h1 class="mt-6 max-w-[18ch] text-[2rem] leading-[1.06] sm:text-[2.5rem] lg:text-[3.1rem]">
-      Do catálogo ao envio, em cinco passos.
-    </h1>
-    <p class="mt-6 max-w-[62ch] text-base text-paper/75 sm:text-lg">
-      O pedido é fechado pelo WhatsApp. Você escolhe os itens no site e a
-      confirmação de disponibilidade, valor e envio acontece na conversa.
-    </p>
+  <section class="border-b border-ink-line">
+    <div class="shell py-12 sm:py-16">
+      <Regua esquerda="Como comprar" direita={`${PASSOS.length} passos`} />
+      <h1 class="mt-6 max-w-[18ch] text-3xl sm:text-4xl lg:text-5xl">
+        Do catálogo ao envio, em cinco passos.
+      </h1>
+      <p class="mt-4 max-w-[62ch] text-base text-paper/75">
+        O pedido é fechado pelo WhatsApp. Você escolhe os itens no site e a
+        confirmação de disponibilidade, valor e envio acontece na conversa.
+      </p>
 
-    <ol class="mt-10 border-t border-ink-line">
-      {PASSOS.map((p, i) => (
-        <li class="border-b border-ink-line py-7 sm:py-8">
-          <div class="flex gap-4 sm:gap-6">
-            <span
-              class="font-mono text-sm text-green sm:text-base"
-              aria-hidden="true"
-            >{String(i + 1).padStart(2, '0')}</span>
-            <div class="min-w-0 flex-1">
-              <div class="flex items-start gap-3">
-                <span class="mt-0.5 shrink-0 text-green sm:hidden" aria-hidden="true">
-                  <Icon name={p.icon} size={20} />
-                </span>
-                <h2 class="text-lg leading-snug sm:text-xl">{p.titulo}</h2>
+      <ol class="mt-10 border-t border-ink-line">
+        {PASSOS.map((p, i) => (
+          <li class="border-b border-ink-line py-6 sm:py-8">
+            <div class="flex gap-4 sm:gap-6">
+              <span
+                class="font-mono text-sm text-green sm:text-base"
+                aria-hidden="true"
+              >{String(i + 1).padStart(2, '0')}</span>
+              <div class="min-w-0 flex-1">
+                <h2 class="text-2xl lg:text-3xl">{p.titulo}</h2>
+                <p class="mt-4 max-w-[60ch] text-base text-paper/75">{p.texto}</p>
               </div>
-              <p class="mt-2 max-w-[60ch] text-base text-paper/75">{p.texto}</p>
             </div>
-            <span class="hidden shrink-0 text-green sm:block" aria-hidden="true">
-              <Icon name={p.icon} size={26} />
-            </span>
+          </li>
+        ))}
+      </ol>
+
+      <div class="mt-12 grid gap-px border border-ink-line bg-ink-line sm:grid-cols-2 lg:grid-cols-4">
+        {RESUMO.map((r) => (
+          <div class="bg-ink p-4 sm:p-6">
+            <p class="label-caps text-paper/60">{r.rotulo}</p>
+            <p class="mt-2 font-display text-xl font-semibold text-paper">{r.valor}</p>
           </div>
-        </li>
-      ))}
-    </ol>
+        ))}
+      </div>
 
-    <div class="mt-12 grid gap-px border border-ink-line bg-ink-line sm:grid-cols-2 lg:grid-cols-4">
-      {RESUMO.map((r) => (
-        <div class="bg-ink px-4 py-5 sm:px-5">
-          <p class="label-caps text-paper/60">{r.rotulo}</p>
-          <p class="mt-2 font-display text-lg font-semibold text-paper">{r.valor}</p>
-        </div>
-      ))}
+      <p class="mt-6 max-w-[64ch] text-sm text-paper/70">
+        Prazo de entrega, custo de frete e pedido mínimo ainda não foram definidos
+        pela BH Key e serão combinados direto no atendimento pelo WhatsApp.
+      </p>
     </div>
+  </section>
 
-    <p class="mt-6 max-w-[64ch] text-sm text-paper/70">
-      Prazo de entrega, custo de frete e pedido mínimo ainda não foram definidos
-      pela BH Key e serão combinados direto no atendimento pelo WhatsApp.
-    </p>
-  </div>
-
-  <section class="border-t border-ink-line bg-ink-soft" aria-labelledby="cc-cta-titulo">
-    <div class="shell flex flex-col items-start gap-7 py-10 sm:flex-row sm:items-center sm:justify-between sm:py-14">
+  <section class="border-b border-ink-line bg-ink-soft" aria-labelledby="cc-cta-titulo">
+    <div class="shell flex flex-col items-start gap-8 py-12 sm:flex-row sm:items-center sm:justify-between sm:py-16">
       <div>
         <Regua esquerda="Começar" direita="WhatsApp" />
-        <h2 id="cc-cta-titulo" class="mt-5 text-2xl sm:text-3xl">
+        <h2 id="cc-cta-titulo" class="mt-6 text-2xl lg:text-3xl">
           Monte a lista e mande agora.
         </h2>
         <p class="mt-4 max-w-[52ch] text-paper/75">
@@ -113,7 +102,7 @@ const RESUMO = [
           de disponibilidade.
         </p>
       </div>
-      <div class="flex shrink-0 flex-col gap-3 sm:flex-row">
+      <div class="flex shrink-0 flex-col gap-4 sm:flex-row">
         <a href={linkWhatsApp()} class="btn btn--primaria" data-whatsapp>
           <Icon name="whatsapp-logo" size={18} />
           Pedir no WhatsApp

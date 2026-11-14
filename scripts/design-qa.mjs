@@ -126,14 +126,14 @@ const AUDITORIA = `(() => {
       raiosAltos.push({ el: el.tagName + '.' + String(el.className).slice(0, 30), raio });
     }
 
-    const interativo = el.matches('a.btn, .btn-chip, button, a[data-whatsapp], header a, #menu-mobile a, footer a');
+    const interativo = el.matches('a.btn, .btn-chip, button, a[data-whatsapp], header a, #menu-mobile a, footer a, main a');
     // link dentro de um parágrafo é texto corrido (exceção inline do WCAG 2.5.8)
     const pai = el.parentElement;
     const ehInline =
       pai &&
       (pai.tagName === 'P' || pai.tagName === 'SPAN') &&
       pai.textContent.trim().length > (el.textContent || '').trim().length + 4;
-    if (interativo && !ehInline && r.height < 40) {
+    if (interativo && !ehInline && r.height < 44) {
       alvosPequenos.push({ txt: (el.textContent || '').trim().slice(0, 26), h: Math.round(r.height) });
     }
   });
@@ -184,7 +184,7 @@ for (const pagina of PAGINAS) {
 
   nota(r.contrasteBaixo.length === 0, `${curto}: contraste AA → ${JSON.stringify(r.contrasteBaixo.slice(0, 5))}`);
   nota(r.corpoPequeno.length === 0, `${curto}: sem texto <14px → ${JSON.stringify(r.corpoPequeno.slice(0, 5))}`);
-  nota(r.alvosPequenos.length === 0, `${curto}: alvos de toque ≥40px → ${JSON.stringify(r.alvosPequenos.slice(0, 6))}`);
+  nota(r.alvosPequenos.length === 0, `${curto}: alvos de toque ≥44px → ${JSON.stringify(r.alvosPequenos.slice(0, 6))}`);
   nota(r.raiosAltos.length === 0, `${curto}: sem raio >8px → ${JSON.stringify(r.raiosAltos.slice(0, 3))}`);
   nota(r.trackingNegativo.length === 0, `${curto}: sem tracking negativo`);
   nota(r.semBalance.length === 0, `${curto}: h1-h3 com text-wrap balance → ${JSON.stringify(r.semBalance.slice(0, 5))}`);

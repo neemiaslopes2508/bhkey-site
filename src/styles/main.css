@@ -1,10 +1,20 @@
-@import "tailwindcss";
+@import "tailwindcss" source(none);
+/* Fonte de utilitários só em src/: os .md do projeto citam classes fora da
+   escala como exemplo, e o auto-scan as injetava no CSS construído. */
+@source "../";
 
 /* =========================================================================
    BH KEY — design tokens
    Amostra de cor extraída da arte do cliente (logo + posts):
      verde de marca #85b339 · preto quase puro #0d1015 · papel off-white
    Verde sobre papel usa variante escura (#4f7119) para contraste AA (4.9:1).
+
+   ESCALA TIPOGRÁFICA FIXA (v2): 12 / 14 / 16 / 20 / 24 / 32 / 40 / 48
+     xs 12 · sm 14 · base 16 · xl 20 · 2xl 24   → já são do Tailwind
+     3xl/4xl/5xl são remapeados abaixo de 30/36/48 para 32/40/48, cada um
+     com a sua altura de linha. Nenhum texto do site usa outro tamanho.
+   PESOS: só dois por tela — 400 (Satoshi, corpo e controles) e
+     600 (Clash Display, títulos, botões e estado ativo).
    ========================================================================= */
 @theme {
   --color-ink: #0d1015;
@@ -19,6 +29,39 @@
   --font-display: "Clash Display", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Satoshi", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Azeret Mono", ui-monospace, "Courier New", monospace;
+
+  --text-3xl: 2rem; /* 32 */
+  --text-3xl--line-height: 2.5rem; /* 40 */
+  --text-4xl: 2.5rem; /* 40 */
+  --text-4xl--line-height: 3rem; /* 48 */
+  --text-5xl: 3rem; /* 48 */
+  --text-5xl--line-height: 3.5rem; /* 56 */
+}
+
+/* --------------------------------------------------------------------------
+   ESCALA DE ESPAÇO EM PONTOS DE 8 — usada em todo CSS próprio e espelhada,
+   passo a passo, nas utilities pares do Tailwind usadas no markup:
+     --space-1  8px → p-2 / gap-2 / mt-2    --space-5 40px → p-10 / gap-10
+     --space-2 16px → p-4 / gap-4 / mt-4    --space-6 48px → p-12 / py-12
+     --space-3 24px → p-6 / gap-6 / mt-6    --space-7 56px → p-14
+     --space-4 32px → p-8 / gap-8 / mt-8    --space-8 64px → p-16 / gap-16
+   Fora da escala só existe o que é exceção declarada:
+     · --touch-min (44px) — alvo de toque mínimo, altura de controle, não
+       espaço de layout;
+     · 4px (mt-1/ml-1) — ajuste ótico de ícone, nunca espaço de layout;
+     · 1px — fio de borda;
+     · 0 — resets (min-w-0, pt-0, inset-y-0).
+   -------------------------------------------------------------------------- */
+:root {
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-7: 56px;
+  --space-8: 64px;
+  --touch-min: 44px;
 }
 
 /* ---------- fontes locais (sem CDN em tempo de execução) ---------- */
@@ -75,13 +118,13 @@
   }
   body {
     min-height: 100dvh;
-    line-height: 1.55;
+    line-height: 1.5;
   }
   h1, h2, h3 {
     font-family: var(--font-display);
     font-weight: 600;
     text-wrap: balance;
-    line-height: 1.08;
+    line-height: 1.2;
   }
   p {
     text-wrap: pretty;
@@ -102,55 +145,54 @@
   }
   :focus-visible {
     outline: 2px solid var(--color-green);
-    outline-offset: 3px;
+    outline-offset: 4px;
   }
 }
 
 /* ---------- utilitários de marca ---------- */
 @utility label-caps {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: 0.75rem; /* 12 — menor passo da escala */
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
-@utility rule-hairline {
-  border-top: 1px solid var(--color-ink-line);
-}
-
 /* Container de página — margem + respiro lateral, igual em todas as seções.
-   Regra simples, fora das camadas do Tailwind: não combinar com px-* no
-   mesmo elemento (a especificidade vence). */
+   Fora das camadas do Tailwind: não combinar com px-* no mesmo elemento. */
 .shell {
   width: 100%;
   max-width: 72rem;
   margin-inline: auto;
-  padding-inline: 1rem;
+  padding-inline: var(--space-2); /* 16 */
 }
 @media (min-width: 640px) {
   .shell {
-    padding-inline: 1.5rem;
+    padding-inline: var(--space-3); /* 24 */
   }
 }
 @media (min-width: 1024px) {
   .shell {
-    padding-inline: 2rem;
+    padding-inline: var(--space-4); /* 32 */
   }
 }
 
-/* ---------- botões (fora das camadas: não combinar com utilities de
-   background/borda no mesmo elemento exceto onde indicado) ---------- */
+/* ---------- botões — um padrão para todas as variantes ----------
+   altura 48 (--space-6), respiro 8/24, fio de 1px, display 600.
+   Estados: hover (papel), active (verde profundo), disabled (opacity global),
+   focus-visible (contorno global de 2px/4px). */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  min-height: 3rem;
-  padding: 0.75rem 1.375rem;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  line-height: 1.25;
+  gap: var(--space-1);
+  min-height: var(--space-6);
+  padding: var(--space-1) var(--space-3);
+  font-family: var(--font-display);
+  font-size: 1rem; /* 16 */
+  font-weight: 600;
+  line-height: 1.5;
   text-align: center;
+  border: 1px solid transparent;
   transition:
     background-color 0.18s ease,
     color 0.18s ease,
@@ -160,36 +202,74 @@
   display: flex;
   width: 100%;
 }
+/* Variante compacta: alvo de toque (44px) e rótulo de 14px. Mesmos estados
+   das demais — só a altura e o corpo mudam. */
+.btn--compacto {
+  min-height: var(--touch-min);
+  padding: var(--space-1) var(--space-2);
+  font-size: 0.875rem; /* 14 */
+}
+/* Exibição responsiva de botão (era hidden/sm:inline-flex e lg:hidden no
+   markup; aqui a display fica dentro do próprio componente). */
+.btn--sm-up {
+  display: none;
+}
+@media (min-width: 640px) {
+  .btn--sm-up {
+    display: inline-flex;
+  }
+}
+.btn--lg-down {
+  display: inline-flex;
+}
+@media (min-width: 1024px) {
+  .btn--lg-down {
+    display: none;
+  }
+}
 .btn--primaria {
   background: var(--color-green);
+  border-color: var(--color-green);
   color: var(--color-ink);
-  border: 1px solid var(--color-green);
 }
 .btn--primaria:hover {
   background: var(--color-paper);
   border-color: var(--color-paper);
   color: var(--color-ink);
 }
+.btn--primaria:active {
+  background: var(--color-green-deep);
+  border-color: var(--color-green-deep);
+  color: var(--color-paper);
+}
 .btn--secundaria {
   background: transparent;
+  border-color: var(--color-ink-line);
   color: var(--color-paper);
-  border: 1px solid var(--color-ink-line);
 }
 .btn--secundaria:hover {
   border-color: var(--color-green);
   color: var(--color-green);
 }
-/* Em seção de papel: .btn sozinho + utilities (border / text-ink / hover:bg-ink). */
+.btn--secundaria:active {
+  background: var(--color-ink-soft);
+  border-color: var(--color-green);
+  color: var(--color-green);
+}
 
 /* ---------- chip de filtro do catálogo ----------
-   O estado ativo é alternado pelo JS via aria-pressed; aqui só a forma. */
+   O estado é declarado só por aria-pressed (o JS não toca em cor), assim
+   largura e peso nunca mudam ao clicar. Altura = alvo de toque (44px). */
 .btn-chip {
   display: inline-flex;
   align-items: center;
-  min-height: 2.75rem;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  line-height: 1.25;
+  justify-content: center;
+  min-height: var(--touch-min);
+  padding: var(--space-1) var(--space-2);
+  font-size: 0.875rem; /* 14 */
+  line-height: 1.5;
+  background: transparent;
+  color: var(--color-paper);
   border: 1px solid var(--color-ink-line);
   transition:
     background-color 0.18s ease,
@@ -198,9 +278,73 @@
 }
 .btn-chip:hover {
   border-color: var(--color-green);
+  color: var(--color-green);
+}
+.btn-chip:active {
+  background: var(--color-ink-soft);
 }
 .btn-chip[aria-pressed='true'] {
+  background: var(--color-green);
   border-color: var(--color-green);
+  color: var(--color-ink);
+}
+.btn-chip[aria-pressed='true']:hover {
+  background: var(--color-green);
+  color: var(--color-ink);
+}
+
+/* ---------- campo de busca — mesma régua do botão ----------
+   altura 48, respiro 8/16, calha de 40px para o ícone. */
+.campo {
+  width: 100%;
+  min-height: var(--space-6);
+  padding: var(--space-1) var(--space-2);
+  padding-left: var(--space-5); /* 40 — calha do ícone */
+  font-family: var(--font-body);
+  font-size: 1rem; /* 16 */
+  line-height: 1.5;
+  color: var(--color-paper);
+  background: var(--color-ink);
+  border: 1px solid var(--color-ink-line);
+  transition: border-color 0.18s ease;
+}
+.campo::placeholder {
+  color: rgb(242 240 233 / 0.55);
+}
+.campo:focus {
+  border-color: var(--color-green);
+}
+.campo-icone {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: var(--space-5); /* 40 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(242 240 233 / 0.6);
+  pointer-events: none;
+}
+
+/* ---------- moldura de foto — uma só para todas as imagens ----------
+   Fundo branco (as fotos são branco puro), fio de 1px, legenda em 12px
+   sobre branco: contraste AA garantido em qualquer página. */
+.foto {
+  background: #fff;
+  border: 1px solid var(--color-ink-line);
+}
+.foto figcaption {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2); /* 8 / 16 */
+  border-top: 1px solid var(--color-ink-line);
+  color: rgb(13 16 21 / 0.65);
+  font-family: var(--font-mono);
+  font-size: 0.75rem; /* 12 */
+  letter-spacing: 0.14em;
+  line-height: 1.5;
+  text-transform: uppercase;
 }
 
 /* Faixa do carrossel: rolagem nativa escondida — funciona mesmo se o

@@ -13,12 +13,7 @@ const total = catalogo.itens.length;
 const categorias = catalogo.categorias.map((c) => ({
   ...c,
   total: catalogo.itens.filter((i) => i.categoria === c.slug).length,
-  img: {
-    'chaves-canivete': 'img/produtos/det-chave-2.jpg',
-    'controles-remotos': 'img/produtos/perfil-remotos-pretos.jpg',
-    'carcasas': 'img/produtos/det-estoque-1.jpg',
-    'chaves-automotivas': 'img/produtos/det-pacotes.jpg',
-  }[c.slug],
+  img: `img/categorias/v2-${c.slug}.jpg`,
 }));
 
 const atalhos = [
@@ -45,12 +40,6 @@ const atalhos = [
   },
 ];
 
-const confianca = [
-  { icon: 'storefront', rotulo: 'Cobertura', texto: 'Atende todo o Brasil' },
-  { icon: 'truck', rotulo: 'Envio', texto: 'Envio para todo o Brasil' },
-  { icon: 'currency-circle-dollar', rotulo: 'Pagamento', texto: 'Pagamento via PIX' },
-];
-
 const destaques = catalogo.itens.slice(0, 6);
 ---
 <Base
@@ -59,18 +48,18 @@ const destaques = catalogo.itens.slice(0, 6);
 >
   <!-- ── Hero ───────────────────────────────────────────────────────── -->
   <section class="border-b border-ink-line">
-    <div class="shell grid items-center gap-8 py-10 sm:py-14 lg:grid-cols-12 lg:gap-12 lg:py-20">
-      <div class="lg:col-span-7" data-reveal>
+    <div class="shell grid items-center gap-8 py-12 sm:py-16 lg:grid-cols-12 lg:gap-12">
+      <div class="lg:col-span-7">
         <Regua esquerda="Material para chaveiro" direita="B2B" />
-        <h1 class="mt-6 text-[2rem] leading-[1.06] sm:text-[2.5rem] lg:text-[3.1rem]">
+        <h1 class="mt-6 text-3xl sm:text-4xl lg:text-5xl">
           Chaves, remotos e carcaças para chaveiros e revendas.
         </h1>
-        <p class="mt-6 max-w-[58ch] text-base leading-relaxed text-paper/75 sm:text-lg">
+        <p class="mt-4 max-w-[58ch] text-base text-paper/75">
           Catálogo técnico com código e foto de cada item. Monte a sua lista e envie
           pelo WhatsApp: disponibilidade e valor são confirmados no atendimento.
           Preços sob consulta.
         </p>
-        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <div class="mt-8 flex flex-col gap-4 sm:flex-row">
           <a href={`${prefix}catalogo.html`} class="btn btn--primaria">
             Ver catálogo
             <Icon name="arrow-right" size={18} />
@@ -83,18 +72,16 @@ const destaques = catalogo.itens.slice(0, 6);
       </div>
 
       <div class="lg:col-span-5">
-        <figure class="border border-ink-line bg-ink-soft">
+        <figure class="foto">
           <img
-            src={`${prefix}img/produtos/det-pacotes.jpg`}
-            alt="Chaves e controles remotos embalados em pacotes plásticos sobre a bancada."
-            width="600"
-            height="600"
+            src={`${prefix}img/v2-hero.jpg`}
+            alt="Chave canivete, controle remoto e carcaça da BH Key lado a lado, sobre fundo branco."
+            width="2100"
+            height="700"
             fetchpriority="high"
-            class="aspect-square w-full object-cover"
+            class="aspect-[3/1] w-full object-cover"
           />
-          <figcaption class="label-caps border-t border-ink-line px-4 py-3 text-paper/60">
-            Estoque em pacote · foto de amostra
-          </figcaption>
+          <figcaption>Linha BH Key · foto de amostra</figcaption>
         </figure>
       </div>
     </div>
@@ -102,7 +89,7 @@ const destaques = catalogo.itens.slice(0, 6);
 
   <!-- ── Atalhos ────────────────────────────────────────────────────── -->
   <section class="border-b border-ink-line" aria-labelledby="atalhos-titulo">
-    <div class="shell py-10 sm:py-14">
+    <div class="shell py-12 sm:py-16">
       <Regua esquerda="Atalhos" direita="Três canais" />
       <h2 id="atalhos-titulo" class="sr-only">Atalhos de contato</h2>
       <ul class="mt-6 border border-ink-line">
@@ -110,15 +97,15 @@ const destaques = catalogo.itens.slice(0, 6);
           <li class:list={[i > 0 && 'border-t border-ink-line']}>
             <a
               href={a.href}
-              class="flex items-center gap-4 bg-ink px-4 py-5 transition-colors hover:bg-ink-soft sm:px-6"
+              class="flex items-center gap-4 bg-ink px-4 py-4 transition-colors hover:bg-ink-soft sm:px-6"
               {...(a.externo ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             >
               <span class="shrink-0 text-green" aria-hidden="true">
                 <Icon name={a.icon} size={26} />
               </span>
               <span class="min-w-0 flex-1">
-                <span class="block font-display text-base font-semibold sm:text-lg">{a.titulo}</span>
-                <span class="mt-0.5 block text-sm text-paper/70 sm:text-base">{a.desc}</span>
+                <span class="block font-display text-base font-semibold sm:text-xl">{a.titulo}</span>
+                <span class="mt-2 block text-sm text-paper/70 sm:text-base">{a.desc}</span>
               </span>
               <span class="shrink-0 text-paper/50" aria-hidden="true">
                 <Icon name="arrow-right" size={20} />
@@ -132,9 +119,9 @@ const destaques = catalogo.itens.slice(0, 6);
 
   <!-- ── Categorias ─────────────────────────────────────────────────── -->
   <section class="border-b border-ink-line" aria-labelledby="categorias-titulo">
-    <div class="shell py-10 sm:py-14 lg:py-16">
+    <div class="shell py-12 sm:py-16">
       <Regua esquerda="Categorias" direita={`${categorias.length} linhas`} />
-      <h2 id="categorias-titulo" class="mt-6 text-2xl sm:text-3xl lg:text-4xl">
+      <h2 id="categorias-titulo" class="mt-6 text-2xl lg:text-3xl">
         Quatro linhas para o seu balcão.
       </h2>
       <p class="mt-4 max-w-[56ch] text-paper/75">
@@ -148,19 +135,19 @@ const destaques = catalogo.itens.slice(0, 6);
               <img
                 src={`${prefix}${c.img}`}
                 alt=""
-                width="600"
-                height="600"
+                width="1200"
+                height="900"
                 loading="lazy"
                 decoding="async"
                 class="aspect-[4/3] w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
               />
             </span>
-            <span class="flex flex-1 flex-col gap-1.5 p-4">
+            <span class="flex flex-1 flex-col gap-2 p-4">
               <span class="label-caps text-green">{c.total} itens</span>
-              <span class="font-display text-lg font-semibold leading-snug transition-colors group-hover:text-green">
+              <span class="font-display text-base font-semibold transition-colors group-hover:text-green sm:text-xl">
                 {c.nome}
               </span>
-              <span class="mt-2 inline-flex items-center gap-1.5 text-sm text-paper/70">
+              <span class="mt-2 inline-flex items-center gap-2 text-sm text-paper/70">
                 Ver categoria
                 <Icon name="arrow-right" size={16} />
               </span>
@@ -171,15 +158,15 @@ const destaques = catalogo.itens.slice(0, 6);
     </div>
   </section>
 
-  <!-- ── Oferta em destaque (seção em papel) ────────────────────────── -->
+  <!-- ── Condição especial (seção em papel) ─────────────────────────── -->
   <section class="border-b border-ink-line bg-paper text-ink" aria-labelledby="oferta-titulo">
     <div class="shell grid items-center gap-8 py-12 sm:py-16 lg:grid-cols-12 lg:gap-12">
       <div class="lg:col-span-7">
         <Regua claro esquerda="Condição especial" direita="Preço sob consulta" />
-        <h2 id="oferta-titulo" class="mt-6 text-2xl sm:text-3xl lg:text-4xl">
+        <h2 id="oferta-titulo" class="mt-6 text-2xl lg:text-3xl">
           A condição especial é combinada no atendimento.
         </h2>
-        <p class="mt-5 max-w-[58ch] text-base text-ink/75 sm:text-lg">
+        <p class="mt-4 max-w-[58ch] text-base text-ink/75">
           As condições em vigor são passadas pelo WhatsApp, com preço sob consulta e
           sujeitas à disponibilidade de estoque. Nada de preço publicado na página:
           o valor é confirmado no atendimento.
@@ -194,19 +181,17 @@ const destaques = catalogo.itens.slice(0, 6);
         </a>
       </div>
       <div class="lg:col-span-5">
-        <figure class="border border-ink/20 bg-paper-dim">
+        <figure class="foto">
           <img
-            src={`${prefix}img/produtos/grid-adesivos-marca.jpg`}
-            alt="Folha de adesivos com a marca BH Key sobre a bancada."
-            width="600"
-            height="600"
+            src={`${prefix}img/produtos/v2-controle-remoto-4-botoes.jpg`}
+            alt="Controle remoto de quatro botões com chaveiro, sobre fundo branco."
+            width="1000"
+            height="1000"
             loading="lazy"
             decoding="async"
             class="aspect-square w-full object-cover"
           />
-          <figcaption class="label-caps border-t border-ink/20 px-4 py-3 text-ink/60">
-            Marca BH Key · foto de amostra
-          </figcaption>
+          <figcaption>Controle remoto 4 botões · foto de amostra</figcaption>
         </figure>
       </div>
     </div>
@@ -214,10 +199,10 @@ const destaques = catalogo.itens.slice(0, 6);
 
   <!-- ── CTA catálogo ───────────────────────────────────────────────── -->
   <section class="border-b border-ink-line bg-ink-soft" aria-labelledby="cta-titulo">
-    <div class="shell flex flex-col items-start gap-7 py-10 sm:flex-row sm:items-center sm:justify-between sm:py-14">
+    <div class="shell flex flex-col items-start gap-8 py-12 sm:flex-row sm:items-center sm:justify-between sm:py-16">
       <div>
         <Regua esquerda="Catálogo completo" direita={`${total} itens`} />
-        <h2 id="cta-titulo" class="mt-5 text-2xl sm:text-3xl lg:text-4xl">
+        <h2 id="cta-titulo" class="mt-6 text-2xl lg:text-3xl">
           Todo o catálogo em um lugar só.
         </h2>
         <p class="mt-4 max-w-[54ch] text-paper/75">
@@ -232,32 +217,13 @@ const destaques = catalogo.itens.slice(0, 6);
     </div>
   </section>
 
-  <!-- ── Faixa de confiança (estática) ──────────────────────────────── -->
-  <section class="border-b border-ink-line" aria-label="Informações de atendimento">
-    <div class="shell py-8">
-      <ul class="grid gap-px border border-ink-line bg-ink-line sm:grid-cols-3">
-        {confianca.map((c) => (
-          <li class="flex items-start gap-3 bg-ink px-4 py-5">
-            <span class="mt-0.5 shrink-0 text-green" aria-hidden="true">
-              <Icon name={c.icon} size={20} />
-            </span>
-            <span class="min-w-0">
-              <span class="label-caps block text-paper/60">{c.rotulo}</span>
-              <span class="mt-1 block text-sm text-paper/85 sm:text-base">{c.texto}</span>
-            </span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
-
   <!-- ── Destaques (Embla carousel) ─────────────────────────────────── -->
   <section class="border-b border-ink-line" aria-labelledby="destaques-titulo">
-    <div class="shell py-10 sm:py-14">
-      <div class="flex flex-wrap items-end justify-between gap-5">
+    <div class="shell py-12 sm:py-16">
+      <div class="flex flex-wrap items-end justify-between gap-6">
         <div class="min-w-0 flex-1">
           <Regua esquerda="Destaques" direita={`${destaques.length} itens`} />
-          <h2 id="destaques-titulo" class="mt-5 text-2xl sm:text-3xl lg:text-4xl">
+          <h2 id="destaques-titulo" class="mt-6 text-2xl lg:text-3xl">
             Prontos para o balcão.
           </h2>
         </div>
@@ -286,7 +252,7 @@ const destaques = catalogo.itens.slice(0, 6);
           <div class="flex" data-embla-container>
             {destaques.map((item) => (
               <div
-                class="flex min-w-0 flex-[0_0_82%] pr-3 sm:flex-[0_0_47%] sm:pr-4 lg:flex-[0_0_31.5%] lg:pr-4"
+                class="flex min-w-0 flex-[0_0_82%] pr-4 sm:flex-[0_0_47%] lg:flex-[0_0_31.5%]"
                 data-embla-slide
               >
                 <ProdutoCard item={item} categorias={catalogo.categorias} borda />
@@ -295,8 +261,8 @@ const destaques = catalogo.itens.slice(0, 6);
           </div>
         </div>
       </div>
-      <p class="label-caps mt-5 text-paper/60">
-        Arraste para o lado ou use as setas · preços sob consulta
+      <p class="label-caps mt-4 text-paper/60">
+        Arraste para o lado ou use as setas
       </p>
     </div>
   </section>

@@ -26,35 +26,35 @@ const VALORES = [
   title="Sobre — BH Key Distribuidora"
   description="Missão, visão e valores da BH Key Distribuidora, distribuidora de material para chaveiro que atende chaveiros e revendas em todo o Brasil."
 >
-  <div class="shell py-10 sm:py-14">
-    <Regua esquerda="Sobre a BH Key" direita="Missão · Visão · Valores" />
-    <h1 class="mt-6 max-w-[20ch] text-[2rem] leading-[1.06] sm:text-[2.5rem] lg:text-[3.1rem]">
-      Distribuidora de material para chaveiro.
-    </h1>
-    <p class="mt-6 max-w-[62ch] text-base text-paper/75 sm:text-lg">
-      A BH Key Distribuidora trabalha com material para chaveiro voltado a
-      profissionais e revendas: chaves canivete, controles remotos, carcaças e
-      chaves automotivas, com atendimento pelo WhatsApp.
-    </p>
+  <section class="border-b border-ink-line">
+    <div class="shell py-12 sm:py-16">
+      <Regua esquerda="Sobre a BH Key" direita="Missão · Visão · Valores" />
+      <h1 class="mt-6 max-w-[20ch] text-3xl sm:text-4xl lg:text-5xl">
+        Distribuidora de material para chaveiro.
+      </h1>
+      <p class="mt-4 max-w-[62ch] text-base text-paper/75">
+        A BH Key Distribuidora trabalha com material para chaveiro voltado a
+        profissionais e revendas: chaves canivete, controles remotos, carcaças e
+        chaves automotivas, com atendimento pelo WhatsApp.
+      </p>
 
-    <figure class="mt-9 border border-ink-line bg-ink-soft">
-      <img
-        src={`${prefix}img/produtos/editorial-estoque-pessoa.jpg`}
-        alt="Equipe da BH Key no estoque, ao lado de caixas de produto identificadas."
-        width="600"
-        height="600"
-        loading="lazy"
-        decoding="async"
-        class="aspect-[16/9] w-full object-cover sm:aspect-[21/9]"
-      />
-      <figcaption class="label-caps border-t border-ink-line px-4 py-3 text-paper/60">
-        Estoque BH Key · foto de amostra
-      </figcaption>
-    </figure>
-  </div>
+      <figure class="foto mt-8">
+        <img
+          src={`${prefix}img/v2-hero.jpg`}
+          alt="Chave canivete, controle remoto e carcaça BH Key lado a lado, sobre fundo branco."
+          width="2100"
+          height="700"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/1] w-full object-cover"
+        />
+        <figcaption>Linha BH Key · foto de amostra</figcaption>
+      </figure>
+    </div>
+  </section>
 
   <!-- Missão e Visão — seção em papel -->
-  <section class="border-y border-ink-line bg-paper text-ink" aria-labelledby="mv-titulo">
+  <section class="border-b border-ink-line bg-paper text-ink" aria-labelledby="mv-titulo">
     <div class="shell py-12 sm:py-16">
       <Regua claro esquerda="Missão e visão" direita="Texto oficial" />
       <h2 id="mv-titulo" class="sr-only">Missão e visão</h2>
@@ -62,13 +62,13 @@ const VALORES = [
       <div class="mt-8 grid gap-10 lg:grid-cols-2 lg:gap-14">
         <div>
           <h3 class="text-xl text-green-ink sm:text-2xl">Missão</h3>
-          <p class="mt-4 max-w-[52ch] text-base leading-relaxed text-ink/80 sm:text-lg">
+          <p class="mt-4 max-w-[52ch] text-base text-ink/80">
             {MISSAO}
           </p>
         </div>
         <div class="border-t border-ink/20 pt-10 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-14">
           <h3 class="text-xl text-green-ink sm:text-2xl">Visão</h3>
-          <p class="mt-4 max-w-[52ch] text-base leading-relaxed text-ink/80 sm:text-lg">
+          <p class="mt-4 max-w-[52ch] text-base text-ink/80">
             {VISAO}
           </p>
         </div>
@@ -80,7 +80,7 @@ const VALORES = [
   <section class="border-b border-ink-line" aria-labelledby="valores-titulo">
     <div class="shell py-12 sm:py-16">
       <Regua esquerda="Valores" direita={`${VALORES.length} princípios`} />
-      <h2 id="valores-titulo" class="mt-6 text-2xl sm:text-3xl lg:text-4xl">
+      <h2 id="valores-titulo" class="mt-6 text-2xl lg:text-3xl">
         O que orienta o atendimento.
       </h2>
 
@@ -88,14 +88,11 @@ const VALORES = [
         {VALORES.map((v, i) => (
           <li
             class:list={[
-              'flex items-center gap-3 bg-ink px-4 py-5 sm:px-5 sm:py-6',
+              'flex items-center bg-ink p-4 sm:p-6',
               i === VALORES.length - 1 && VALORES.length % 2 === 1 && 'sm:col-span-2',
             ]}
           >
-            <span class="shrink-0 text-green" aria-hidden="true">
-              <Icon name="check" size={20} />
-            </span>
-            <span class="font-display text-base font-semibold leading-snug sm:text-lg">{v}</span>
+            <span class="font-display text-base font-semibold sm:text-xl">{v}</span>
           </li>
         ))}
       </ul>
@@ -104,17 +101,17 @@ const VALORES = [
 
   <!-- CTA -->
   <section class="border-b border-ink-line bg-ink-soft" aria-labelledby="sobre-cta-titulo">
-    <div class="shell flex flex-col items-start gap-7 py-10 sm:flex-row sm:items-center sm:justify-between sm:py-14">
+    <div class="shell flex flex-col items-start gap-8 py-12 sm:flex-row sm:items-center sm:justify-between sm:py-16">
       <div>
         <Regua esquerda="Próximo passo" direita="WhatsApp" />
-        <h2 id="sobre-cta-titulo" class="mt-5 text-2xl sm:text-3xl">
+        <h2 id="sobre-cta-titulo" class="mt-6 text-2xl lg:text-3xl">
           Fale com a BH Key.
         </h2>
         <p class="mt-4 max-w-[52ch] text-paper/75">
           Envie sua lista de material para chaveiro e confira disponibilidade e valor.
         </p>
       </div>
-      <div class="flex shrink-0 flex-col gap-3 sm:flex-row">
+      <div class="flex shrink-0 flex-col gap-4 sm:flex-row">
         <a href={linkWhatsApp()} class="btn btn--primaria" data-whatsapp>
           <Icon name="whatsapp-logo" size={18} />
           Pedir no WhatsApp

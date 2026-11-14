@@ -35,10 +35,10 @@ const mensagem = MENSAGEM_PRODUTO(item.codigo, item.nome);
   </a>
   <div class="flex flex-1 flex-col gap-2 p-4">
     <p class="label-caps text-green">{item.codigo}</p>
-    <h3 class="text-base leading-snug sm:text-lg">
+    <h3 class="text-base sm:text-xl">
       <a
         href={`${prefix}produto/${item.slug}.html`}
-        class="inline-flex min-h-11 items-center py-1 transition-colors hover:text-green"
+        class="inline-flex min-h-11 items-center transition-colors hover:text-green"
       >
         {item.nome}
       </a>
@@ -46,7 +46,7 @@ const mensagem = MENSAGEM_PRODUTO(item.codigo, item.nome);
     {categoria && <p class="text-sm text-paper/60">{categoria.nome}</p>}
     <a
       href={linkWhatsApp(mensagem)}
-      class="mt-3 inline-flex items-center justify-center gap-2 border border-ink-line px-4 py-3 text-sm font-medium text-paper transition-colors hover:border-green hover:text-green"
+      class="mt-2 inline-flex min-h-11 items-center justify-center gap-2 border border-ink-line px-4 text-sm text-paper transition-colors hover:border-green hover:text-green"
       data-whatsapp
     >
       <Icon name="whatsapp-logo" size={18} />

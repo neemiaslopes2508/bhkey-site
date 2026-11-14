@@ -1,4 +1,4 @@
-# BH Key Distribuidora — site v1 (estático, pt-BR)
+# BH Key Distribuidora — site v2 (estático, pt-BR)
 
 Site institucional + catálogo B2B da BH Key Distribuidora (chaves automóticas e
 material para chaveiro). É o destino do QR code dos displays de balcão: abre em
@@ -68,7 +68,7 @@ bhkey-site/
 │   ├── lib/paths.js      # auxiliar de caminhos relativos
 │   └── styles/main.css   # tokens Tailwind v4 (tema)
 ├── public/               # copiados sem mudança para dist/ (css, js, img, fonts)
-├── scripts/              # build/QA (serve, shot-mobile, design-qa, crop-photos…)
+├── scripts/              # build/QA (serve, shot-mobile, design-qa…)
 ├── dist/                 # ← build estático final (entrega)
 └── screenshots/          # 390×844 por página
 ```
@@ -99,7 +99,7 @@ todos os 103 links saem desse valor via `linkWhatsApp()`.
   "nome": "Chave canivete 2 botões com lâmina",
   "categoria": "chaves-canivete",
   "descricao": "…",
-  "imagem": "det-chave-2.jpg",
+  "img": "img/produtos/v2-chave-canivete-2-botoes.jpg",
   "amostra": true
 }
 ```
@@ -155,9 +155,21 @@ direto da pasta. Páginas aninhadas (`produto/`) usam prefixos `../`.
 
 ## Amostras de imagem
 
-As fotos são recortes dos prints do Instagram do cliente, servindo como
-placeholder até chegarem as fotos reais. Recortes com preço ou legenda
-queimados na imagem foram excluídos.
+As fotos são de catálogos públicos de distribuidoras/lojas de chaves
+brasileiras, usadas como ilustração de demonstração — **não é o estoque da
+BH Key**. Foram normalizadas para fundo branco, 1000×1000 (categorias 1200×900,
+capa 2100×700) e recebem o prefixo `v2-`:
+
+| Arquivo | Uso |
+|---|---|
+| `public/img/produtos/v2-<slug>.jpg` | card e página de produto (14) |
+| `public/img/categorias/v2-<categoria>.jpg` | cards de categoria da home (4) |
+| `public/img/v2-hero.jpg` | capa da home e da página Sobre (3:1) |
+
+Origem de cada foto documentada em `v2-arte/ARTE.md` (na pasta do projeto da
+v2). Ao chegar as fotos do cliente, basta substituir os arquivos **com os
+mesmos nomes** e rebuildar. Os recortes do Instagram da v1 foram removidos por
+inteiro — nem `public/` nem `dist/` os têm mais.
 
 ---
 
@@ -169,7 +181,7 @@ queimados na imagem foram excluídos.
 | ✅ Real | Categorias (4) e textos de página em pt-BR |
 | ✅ Real | Ícones, fontes, logo, cores da marca |
 | ⏳ Amostra | 14 itens de catálogo (marcados `amostra: true`) |
-| ⏳ Amostra | Fotos (recortes do Instagram) |
+| ⏳ Amostra | Fotos (catálogo de distribuidoras — ver "Amostras de imagem") |
 | ⛔ Placeholder | Número do WhatsApp (`5531999999999`) |
 | ⛔ Placeholder | Endereço, horário, pedido mínimo, regras de frete |
 
@@ -184,3 +196,22 @@ queimados na imagem foram excluídos.
 - Bloco de destaque deixou de falar em "oferta da semana" (a loja não confirmou
   esse programa); virou "Condição especial".
 - `public/styles.css` regerado no build.
+
+---
+
+## v2 — fotos reais + acabamento
+
+Pedido do cliente sobre a v1.1 aprovada. **Não é redesign de marca**: identidade
+preto/verde, tipografia forte, códigos em monoespaçada e a estrutura de 5
+páginas continuam iguais.
+
+- **Fotos**: os 14 itens, as 4 categorias, a capa da home e a página Sobre
+  passam a usar fotos reais de catálogo (fundo branco, prefixo `v2-`).
+  Nenhum recorte do Instagram sobra em `public/` nem em `dist/`.
+  `v2-braco-chave-em-branco.jpg` teve o fundo de papel cinza normalizado para
+  branco por segmentação de silhueta (mesmo recorte, mesma geometria).
+- **Acabamento**: sistema de espaçamento em múltiplos de 8, escala de tipografia
+  fixa, padrão único de componentes (card, chip, botão, busca, régua de seção,
+  rodapé) e responsivo conferido em 360/390/768/1024/1440.
+- **Removidos**: `scripts/crop-photos.mjs`, `scripts/detect-bands.mjs` e
+  `scripts/detect-grid.mjs` — ferramentas da v1 que geravam os recortes.

@@ -5,10 +5,10 @@
 // Tom escuro por padrão; `claro` inverte para seções em papel.
 const { esquerda, direita, claro = false, class: className = '' } = Astro.props;
 ---
-<div class:list={['flex flex-wrap items-center gap-x-3 gap-y-1 sm:gap-x-4', className]}>
+<div class:list={['flex flex-wrap items-center gap-x-4 gap-y-2', className]}>
   <span class:list={['label-caps shrink-0', claro ? 'text-green-ink' : 'text-green']}>{esquerda}</span>
   <span class:list={['h-px flex-1', claro ? 'bg-ink/20' : 'bg-ink-line']} aria-hidden="true"></span>
   {direita && (
-    <span class:list={['label-caps shrink-0', claro ? 'text-ink/60' : 'text-paper/60']}>{direita}</span>
+    <span class:list={['label-caps ml-auto shrink-0', claro ? 'text-ink/60' : 'text-paper/60']}>{direita}</span>
   )}
 </div>

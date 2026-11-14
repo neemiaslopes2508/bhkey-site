@@ -2,10 +2,22 @@
   "_aviso": "DADOS DE AMOSTRA — itens e códigos fictícios, só para demonstrar o layout. O catálogo real entra antes da publicação.",
   "_amostra": true,
   "categorias": [
-    { "slug": "chaves-canivete", "nome": "Chaves canivete" },
-    { "slug": "controles-remotos", "nome": "Controles remotos" },
-    { "slug": "carcasas", "nome": "Carcaças" },
-    { "slug": "chaves-automotivas", "nome": "Chaves automotivas" }
+    {
+      "slug": "chaves-canivete",
+      "nome": "Chaves canivete"
+    },
+    {
+      "slug": "controles-remotos",
+      "nome": "Controles remotos"
+    },
+    {
+      "slug": "carcasas",
+      "nome": "Carcaças"
+    },
+    {
+      "slug": "chaves-automotivas",
+      "nome": "Chaves automotivas"
+    }
   ],
   "itens": [
     {
@@ -14,7 +26,7 @@
       "nome": "Chave canivete 2 botões com lâmina",
       "categoria": "chaves-canivete",
       "descricao": "Chave canivete com dois botões e lâmina em branco para fresagem. Consulte compatibilidade.",
-      "img": "img/produtos/perfil-chave-canivete.jpg",
+      "img": "img/produtos/v2-chave-canivete-2-botoes.jpg",
       "amostra": true
     },
     {
@@ -23,7 +35,7 @@
       "nome": "Chave canivete 3 botões com lâmina",
       "categoria": "chaves-canivete",
       "descricao": "Chave canivete com três botões e lâmina em branco. Consulte compatibilidade.",
-      "img": "img/produtos/det-chave-2.jpg",
+      "img": "img/produtos/v2-chave-canivete-3-botoes.jpg",
       "amostra": true
     },
     {
@@ -32,7 +44,7 @@
       "nome": "Chave canivete com abertura manual",
       "categoria": "chaves-canivete",
       "descricao": "Chave canivete com abertura manual e lâmina em branco. Consulte compatibilidade.",
-      "img": "img/produtos/grid-remoto-mao.jpg",
+      "img": "img/produtos/v2-chave-canivete-abertura-manual.jpg",
       "amostra": true
     },
     {
@@ -41,7 +53,7 @@
       "nome": "Chave canivete 2 botões sem lâmina",
       "categoria": "chaves-canivete",
       "descricao": "Corpo de chave canivete com dois botões, sem lâmina. Consulte compatibilidade.",
-      "img": "img/produtos/det-remotos-2.jpg",
+      "img": "img/produtos/v2-chave-canivete-2-botoes-sem-lamina.jpg",
       "amostra": true
     },
     {
@@ -50,7 +62,7 @@
       "nome": "Controle remoto 2 botões",
       "categoria": "controles-remotos",
       "descricao": "Controle remoto com dois botões, pronto para programação. Consulte compatibilidade.",
-      "img": "img/produtos/grid-remotos-pacote.jpg",
+      "img": "img/produtos/v2-controle-remoto-2-botoes.jpg",
       "amostra": true
     },
     {
@@ -59,7 +71,7 @@
       "nome": "Controle remoto 3 botões com chave",
       "categoria": "controles-remotos",
       "descricao": "Controle remoto com três botões e chave integrada. Consulte compatibilidade.",
-      "img": "img/produtos/perfil-remotos-pretos.jpg",
+      "img": "img/produtos/v2-controle-remoto-3-botoes-chave.jpg",
       "amostra": true
     },
     {
@@ -68,7 +80,7 @@
       "nome": "Controle remoto 4 botões",
       "categoria": "controles-remotos",
       "descricao": "Controle remoto com quatro botões, pronto para programação. Consulte compatibilidade.",
-      "img": "img/produtos/det-remotos.jpg",
+      "img": "img/produtos/v2-controle-remoto-4-botoes.jpg",
       "amostra": true
     },
     {
@@ -77,7 +89,7 @@
       "nome": "Controle remoto 2 botões com chave dobrável",
       "categoria": "controles-remotos",
       "descricao": "Controle remoto com dois botões e chave dobrável. Consulte compatibilidade.",
-      "img": "img/produtos/det-pacotes.jpg",
+      "img": "img/produtos/v2-controle-remoto-2-botoes-dobravel.jpg",
       "amostra": true
     },
     {
@@ -86,7 +98,7 @@
       "nome": "Carcaça para controle remoto 2 botões",
       "categoria": "carcasas",
       "descricao": "Carcaça de reposição para controle remoto de dois botões. Consulte compatibilidade.",
-      "img": "img/produtos/det-maos-pacotes.jpg",
+      "img": "img/produtos/v2-carcase-controle-remoto-2-botoes.jpg",
       "amostra": true
     },
     {
@@ -95,7 +107,7 @@
       "nome": "Carcaça para chave canivete",
       "categoria": "carcasas",
       "descricao": "Carcaça de reposição para chave canivete. Consulte compatibilidade.",
-      "img": "img/produtos/perfil-pacotes-mesa.jpg",
+      "img": "img/produtos/v2-carcase-chave-canivete.jpg",
       "amostra": true
     },
     {
@@ -104,7 +116,7 @@
       "nome": "Carcaça com moldura e botões",
       "categoria": "carcasas",
       "descricao": "Carcaça de reposição com moldura e jogo de botões. Consulte compatibilidade.",
-      "img": "img/produtos/grid-adesivos-marca.jpg",
+      "img": "img/produtos/v2-carcase-moldura-botoes.jpg",
       "amostra": true
     },
     {
@@ -113,7 +125,7 @@
       "nome": "Chave automotiva em branco com lâmina",
       "categoria": "chaves-automotivas",
       "descricao": "Chave automotiva em branco com lâmina para fresagem. Consulte compatibilidade.",
-      "img": "img/produtos/det-estoque-1.jpg",
+      "img": "img/produtos/v2-chave-automatica-em-branco.jpg",
       "amostra": true
     },
     {
@@ -122,7 +134,7 @@
       "nome": "Braço de chave em branco",
       "categoria": "chaves-automotivas",
       "descricao": "Braço de chave em branco para montagem com comando. Consulte compatibilidade.",
-      "img": "img/produtos/det-estoque-2.jpg",
+      "img": "img/produtos/v2-braco-chave-em-branco.jpg",
       "amostra": true
     },
     {
@@ -131,7 +143,7 @@
       "nome": "Chave em branco com cabo e lâmina",
       "categoria": "chaves-automotivas",
       "descricao": "Chave em branco com cabo e lâmina para fresagem. Consulte compatibilidade.",
-      "img": "img/produtos/det-adesivos.jpg",
+      "img": "img/produtos/v2-chave-em-branco-cabo-lamina.jpg",
       "amostra": true
     }
   ]

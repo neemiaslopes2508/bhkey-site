@@ -1,7 +1,7 @@
 // BH Key — interações do site (empacotado com esbuild em public/app.js).
-// 1. menu mobile  2. filtro de categoria + busca no catálogo  3. micro-animais (motion)
-// 4. carrossel de destaques (Embla)
-import { animate } from 'motion';
+// 1. menu mobile  2. filtro de categoria + busca no catálogo
+// 3. carrossel de destaques (Embla). Sem animação de entrada: a página é
+//    legível desde o primeiro frame (prefers-reduced-motion já é respeitado).
 import createEmblaCarousel from 'embla-carousel';
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -60,12 +60,10 @@ if (grid) {
         : `${visiveis} de ${cards.length} itens`;
     }
     if (empty) empty.classList.toggle('hidden', visiveis > 0);
+    // A cor do chip é CSS puro ([aria-pressed='true']): aqui só o estado,
+    // para a largura do chip nunca mudar ao clicar.
     chips.forEach((chip) => {
-      const active = chip.dataset.filtro === categoria;
-      chip.setAttribute('aria-pressed', String(active));
-      chip.classList.toggle('bg-green', active);
-      chip.classList.toggle('text-ink', active);
-      chip.classList.toggle('text-paper/75', !active);
+      chip.setAttribute('aria-pressed', String(chip.dataset.filtro === categoria));
     });
     sincronizarURL();
   }
@@ -99,29 +97,10 @@ if (grid) {
   aplicar();
 }
 
-/* ---------- micro-animais: entrada discreta de seções ---------- */
-if (!reduceMotion) {
-  document.querySelectorAll('[data-reveal]').forEach((el) => {
-    animate(
-      el,
-      { opacity: [0, 1], transform: ['translateY(12px)', 'translateY(0)'] },
-      { duration: 0.45, easing: [0.22, 1, 0.36, 1] }
-    );
-  });
-  // hover sutil nos cards do catálogo
-  document.querySelectorAll('[data-produto]').forEach((card) => {
-    card.addEventListener('mouseenter', () => {
-      animate(card, { transform: 'translateY(-3px)' }, { duration: 0.18 });
-    });
-    card.addEventListener('mouseleave', () => {
-      animate(card, { transform: 'translateY(0)' }, { duration: 0.18 });
-    });
-  });
-}
-
 /* ---------- carrossel de destaques (Embla) ----------
    Sem JS a faixa continua rolando na mão (overflow-x nativo); com JS o
-   Embla assume, com setas e estado de botão desabilitado. */
+   Embla assume, com setas e estado de botão desabilitado.
+   Sem animação de entrada: o conteúdo é lido desde o primeiro frame. */
 document.querySelectorAll('[data-embla-viewport]').forEach((viewport) => {
   const secao = viewport.closest('section');
   const anterior = secao ? secao.querySelector('[data-embla-prev]') : null;

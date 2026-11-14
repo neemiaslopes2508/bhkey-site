@@ -19,120 +19,122 @@ const indice = catalogo.itens.findIndex((i) => i.slug === item.slug);
 const proximo = catalogo.itens[(indice + 1) % catalogo.itens.length];
 ---
 <Base title={`${item.codigo} · ${item.nome} — BH Key Distribuidora`} description={item.descricao}>
-  <div class="shell py-8 sm:py-12">
-    <nav aria-label="Trilha de navegação" class="mb-6">
-      <ol class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-paper/60">
-        <li>
-          <a href={`${prefix}catalogo.html`} class="transition-colors hover:text-paper">Catálogo</a>
-        </li>
-        <li aria-hidden="true">/</li>
-        <li>
-          <a
-            href={`${prefix}catalogo.html?cat=${item.categoria}`}
-            class="transition-colors hover:text-paper"
-          >{categoria ? categoria.nome : 'Item'}</a>
-        </li>
-        <li aria-hidden="true">/</li>
-        <li class="text-paper/85" aria-current="page">{item.codigo}</li>
-      </ol>
-    </nav>
-
-    <Regua
-      esquerda="Item do catálogo"
-      direita={categoria ? categoria.nome : undefined}
-    />
-
-    <div class="mt-6 grid gap-8 lg:grid-cols-12 lg:gap-12">
-      <div class="lg:col-span-7">
-        <figure class="border border-ink-line bg-ink-soft">
-          <img
-            src={`${prefix}${item.img}`}
-            alt={item.nome}
-            width="600"
-            height="600"
-            class="aspect-square w-full object-cover"
-          />
-          <figcaption class="label-caps border-t border-ink-line px-4 py-3 text-paper/60">
-            {item.codigo} · foto de amostra
-          </figcaption>
-        </figure>
-      </div>
-
-      <div class="lg:col-span-5">
-        <p class="label-caps text-green">{item.codigo}</p>
-        <h1 class="mt-3 text-[2rem] leading-[1.08] sm:text-[2.375rem] lg:text-[2.75rem]">
-          {item.nome}
-        </h1>
-        {categoria && (
-          <p class="mt-4 text-sm text-paper/70">
-            <span class="label-caps mr-2 text-paper/60">Categoria</span>
+  <section class="border-b border-ink-line">
+    <div class="shell py-12 sm:py-16">
+      <nav aria-label="Trilha de navegação" class="mb-6">
+        <ol class="flex flex-wrap items-center gap-x-2 gap-y-2 text-sm text-paper/60">
+          <li>
+            <a
+              href={`${prefix}catalogo.html`}
+              class="inline-flex min-h-11 items-center transition-colors hover:text-paper"
+            >Catálogo</a>
+          </li>
+          <li aria-hidden="true">/</li>
+          <li>
             <a
               href={`${prefix}catalogo.html?cat=${item.categoria}`}
-              class="text-paper underline underline-offset-4 transition-colors hover:text-green"
-            >{categoria.nome}</a>
-          </p>
-        )}
+              class="inline-flex min-h-11 items-center transition-colors hover:text-paper"
+            >{categoria ? categoria.nome : 'Item'}</a>
+          </li>
+          <li aria-hidden="true">/</li>
+          <li class="inline-flex min-h-11 items-center text-paper/85" aria-current="page">{item.codigo}</li>
+        </ol>
+      </nav>
 
-        <p class="mt-5 max-w-[54ch] text-base leading-relaxed text-paper/75 sm:text-lg">
-          {item.descricao}
-        </p>
+      <Regua
+        esquerda="Item do catálogo"
+        direita={categoria ? categoria.nome : undefined}
+      />
 
-        <p class="mt-6 flex items-center gap-2 text-sm text-paper/70">
-          <Icon name="tag" size={18} />
-          Preço sob consulta — valor confirmado no atendimento.
-        </p>
-
-        <div class="mt-7 max-w-[46rem]">
-          <AvisoAmostra aviso={catalogo._aviso} />
+      <div class="mt-6 grid gap-8 lg:grid-cols-12 lg:gap-12">
+        <div class="lg:col-span-7">
+          <figure class="foto">
+            <img
+              src={`${prefix}${item.img}`}
+              alt={item.nome}
+              width="600"
+              height="600"
+              class="aspect-square w-full object-cover"
+            />
+            <figcaption>{item.codigo} · foto de amostra</figcaption>
+          </figure>
         </div>
 
-        <a
-          href={linkWhatsApp(mensagem)}
-          class="btn btn--primaria btn--block mt-7"
-          data-whatsapp
-        >
-          <Icon name="whatsapp-logo" size={20} />
-          Pedir no WhatsApp
-        </a>
-        <p class="mt-3 text-center text-sm text-paper/60 sm:text-left">
-          A mensagem já vai com o código <span class="font-mono">{item.codigo}</span> e o nome do item.
-        </p>
+        <div class="lg:col-span-5">
+          <p class="label-caps text-green">{item.codigo}</p>
+          <h1 class="mt-4 text-3xl sm:text-4xl">
+            {item.nome}
+          </h1>
+          {categoria && (
+            <p class="mt-4 text-sm text-paper/70">
+              <span class="label-caps mr-2 text-paper/60">Categoria</span>
+              <a
+                href={`${prefix}catalogo.html?cat=${item.categoria}`}
+                class="inline-flex min-h-11 items-center text-paper underline underline-offset-4 transition-colors hover:text-green"
+              >{categoria.nome}</a>
+            </p>
+          )}
 
+          <p class="mt-4 max-w-[54ch] text-base text-paper/75">
+            {item.descricao}
+          </p>
+
+          <p class="mt-6 text-sm text-paper/70">
+            Preço sob consulta — valor confirmado no atendimento.
+          </p>
+
+          <div class="mt-6 max-w-[46rem]">
+            <AvisoAmostra aviso={catalogo._aviso} />
+          </div>
+
+          <a
+            href={linkWhatsApp(mensagem)}
+            class="btn btn--primaria btn--block mt-6"
+            data-whatsapp
+          >
+            <Icon name="whatsapp-logo" size={20} />
+            Pedir no WhatsApp
+          </a>
+          <p class="mt-4 text-center text-sm text-paper/60 sm:text-left">
+            A mensagem já vai com o código <span class="font-mono">{item.codigo}</span> e o nome do item.
+          </p>
+
+          <a
+            href={`${prefix}catalogo.html`}
+            class="mt-6 inline-flex min-h-11 items-center gap-2 text-sm text-paper/75 underline underline-offset-4 transition-colors hover:text-paper"
+          >
+            <Icon name="arrow-left" size={16} />
+            Voltar ao catálogo
+          </a>
+        </div>
+      </div>
+
+      <div class="mt-12 border-t border-ink-line pt-8">
+        <Regua esquerda="Próximo item" direita={`${indice + 1} de ${catalogo.itens.length}`} />
         <a
-          href={`${prefix}catalogo.html`}
-          class="mt-6 inline-flex items-center gap-2 text-sm text-paper/75 underline underline-offset-4 transition-colors hover:text-paper"
+          href={`${prefix}produto/${proximo.slug}.html`}
+          class="group mt-6 flex items-center gap-4 border border-ink-line bg-ink p-4 transition-colors hover:border-green sm:p-6"
         >
-          <Icon name="arrow-left" size={16} />
-          Voltar ao catálogo
+          <img
+            src={`${prefix}${proximo.img}`}
+            alt=""
+            width="600"
+            height="600"
+            loading="lazy"
+            decoding="async"
+            class="h-16 w-16 shrink-0 border border-ink-line object-cover"
+          />
+          <span class="min-w-0 flex-1">
+            <span class="label-caps block text-green">{proximo.codigo}</span>
+            <span class="mt-2 block font-display text-base font-semibold transition-colors group-hover:text-green sm:text-xl">
+              {proximo.nome}
+            </span>
+          </span>
+          <span class="shrink-0 text-paper/50" aria-hidden="true">
+            <Icon name="arrow-right" size={20} />
+          </span>
         </a>
       </div>
     </div>
-
-    <div class="mt-12 border-t border-ink-line pt-8">
-      <Regua esquerda="Próximo item" direita={`${indice + 1} de ${catalogo.itens.length}`} />
-      <a
-        href={`${prefix}produto/${proximo.slug}.html`}
-        class="group mt-5 flex items-center gap-4 border border-ink-line bg-ink p-4 transition-colors hover:border-green sm:p-5"
-      >
-        <img
-          src={`${prefix}${proximo.img}`}
-          alt=""
-          width="600"
-          height="600"
-          loading="lazy"
-          decoding="async"
-          class="h-16 w-16 shrink-0 object-cover"
-        />
-        <span class="min-w-0 flex-1">
-          <span class="label-caps block text-green">{proximo.codigo}</span>
-          <span class="mt-1 block font-display text-base font-semibold leading-snug transition-colors group-hover:text-green sm:text-lg">
-            {proximo.nome}
-          </span>
-        </span>
-        <span class="shrink-0 text-paper/50" aria-hidden="true">
-          <Icon name="arrow-right" size={20} />
-        </span>
-      </a>
-    </div>
-  </div>
+  </section>
 </Base>
