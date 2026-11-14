@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import Regua from '../components/Regua.astro';
+import Icon from '../components/Icon.astro';
+import { prefixFor } from '../lib/paths.js';
+import { linkWhatsApp } from '../config/site.js';
+
+const prefix = prefixFor(Astro.url.pathname);
+---
+<Base
+  title="Página não encontrada — BH Key Distribuidora"
+  description="A página que você abriu não existe. Volte para o início ou abra o catálogo da BH Key Distribuidora."
+>
+  <div class="shell py-14 sm:py-20">
+    <Regua esquerda="Erro 404" direita="Arquivo não encontrado" />
+    <h1 class="mt-6 max-w-[18ch] text-[2rem] leading-[1.06] sm:text-[2.5rem] lg:text-[3.1rem]">
+      Página não encontrada.
+    </h1>
+    <p class="mt-6 max-w-[56ch] text-base text-paper/75 sm:text-lg">
+      O endereço que você abriu não existe ou foi movido. Confira o link, ou
+      volte para o início e navegue pelo catálogo.
+    </p>
+
+    <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+      <a href={`${prefix}index.html`} class="btn btn--primaria">
+        <Icon name="house-line" size={18} />
+        Ir para o início
+      </a>
+      <a href={`${prefix}catalogo.html`} class="btn btn--secundaria">
+        Ver catálogo
+        <Icon name="arrow-right" size={18} />
+      </a>
+      <a href={linkWhatsApp()} class="btn btn--secundaria" data-whatsapp>
+        <Icon name="whatsapp-logo" size={18} />
+        Falar no WhatsApp
+      </a>
+    </div>
+  </div>
+</Base>

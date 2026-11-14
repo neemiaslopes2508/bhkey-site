@@ -1,0 +1,12 @@
+---
+// Aviso fixo de dado de amostra. Precisa aparecer em catálogo e em produto.
+import Icon from './Icon.astro';
+const { aviso } = Astro.props;
+---
+<p
+  class="flex items-start gap-3 border border-green/40 bg-green/10 px-4 py-3 text-sm text-paper/85"
+  role="note"
+>
+  <span class="mt-0.5 shrink-0 text-green"><Icon name="warning" size={18} /></span>
+  <span>{aviso}</span>
+</p>

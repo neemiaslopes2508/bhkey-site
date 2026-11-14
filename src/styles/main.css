@@ -1,0 +1,223 @@
+@import "tailwindcss";
+
+/* =========================================================================
+   BH KEY — design tokens
+   Amostra de cor extraída da arte do cliente (logo + posts):
+     verde de marca #85b339 · preto quase puro #0d1015 · papel off-white
+   Verde sobre papel usa variante escura (#4f7119) para contraste AA (4.9:1).
+   ========================================================================= */
+@theme {
+  --color-ink: #0d1015;
+  --color-ink-soft: #171c22;
+  --color-ink-line: #2a3138;
+  --color-green: #85b339;
+  --color-green-ink: #4f7119;
+  --color-green-deep: #33490f;
+  --color-paper: #f2f0e9;
+  --color-paper-dim: #e6e3d9;
+
+  --font-display: "Clash Display", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Satoshi", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Azeret Mono", ui-monospace, "Courier New", monospace;
+}
+
+/* ---------- fontes locais (sem CDN em tempo de execução) ---------- */
+@font-face {
+  font-family: "Clash Display";
+  src: url("./fonts/ClashDisplay-600.woff2") format("woff2");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Clash Display";
+  src: url("./fonts/ClashDisplay-700.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Satoshi";
+  src: url("./fonts/Satoshi-400.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Satoshi";
+  src: url("./fonts/Satoshi-500.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Satoshi";
+  src: url("./fonts/Satoshi-700.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Azeret Mono";
+  src: url("./fonts/AzeretMono-400.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Azeret Mono";
+  src: url("./fonts/AzeretMono-500.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+
+/* ---------- base ---------- */
+@layer base {
+  html {
+    font-family: var(--font-body);
+    background: var(--color-ink);
+    color: var(--color-paper);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    min-height: 100dvh;
+    line-height: 1.55;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-wrap: balance;
+    line-height: 1.08;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  img {
+    display: block;
+    max-width: 100%;
+  }
+  a {
+    color: inherit;
+  }
+  button {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.35;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-green);
+    outline-offset: 3px;
+  }
+}
+
+/* ---------- utilitários de marca ---------- */
+@utility label-caps {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@utility rule-hairline {
+  border-top: 1px solid var(--color-ink-line);
+}
+
+/* Container de página — margem + respiro lateral, igual em todas as seções.
+   Regra simples, fora das camadas do Tailwind: não combinar com px-* no
+   mesmo elemento (a especificidade vence). */
+.shell {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+@media (min-width: 640px) {
+  .shell {
+    padding-inline: 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .shell {
+    padding-inline: 2rem;
+  }
+}
+
+/* ---------- botões (fora das camadas: não combinar com utilities de
+   background/borda no mesmo elemento exceto onde indicado) ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding: 0.75rem 1.375rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: center;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+.btn--block {
+  display: flex;
+  width: 100%;
+}
+.btn--primaria {
+  background: var(--color-green);
+  color: var(--color-ink);
+  border: 1px solid var(--color-green);
+}
+.btn--primaria:hover {
+  background: var(--color-paper);
+  border-color: var(--color-paper);
+  color: var(--color-ink);
+}
+.btn--secundaria {
+  background: transparent;
+  color: var(--color-paper);
+  border: 1px solid var(--color-ink-line);
+}
+.btn--secundaria:hover {
+  border-color: var(--color-green);
+  color: var(--color-green);
+}
+/* Em seção de papel: .btn sozinho + utilities (border / text-ink / hover:bg-ink). */
+
+/* ---------- chip de filtro do catálogo ----------
+   O estado ativo é alternado pelo JS via aria-pressed; aqui só a forma. */
+.btn-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  border: 1px solid var(--color-ink-line);
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+.btn-chip:hover {
+  border-color: var(--color-green);
+}
+.btn-chip[aria-pressed='true'] {
+  border-color: var(--color-green);
+}
+
+/* Faixa do carrossel: rolagem nativa escondida — funciona mesmo se o
+   JavaScript falhar, e o Embla assume o controle quando ele carrega. */
+.sem-barra {
+  scrollbar-width: none;
+}
+.sem-barra::-webkit-scrollbar {
+  display: none;
+}
+
+/* respeita quem pediu menos animação */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

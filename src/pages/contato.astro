@@ -1,0 +1,132 @@
+---
+import Base from '../layouts/Base.astro';
+import Regua from '../components/Regua.astro';
+import Icon from '../components/Icon.astro';
+import { prefixFor } from '../lib/paths.js';
+import {
+  linkWhatsApp,
+  INSTAGRAM_URL,
+  INSTAGRAM_HANDLE,
+  MAPA_URL,
+  ENDERECO,
+  HORARIO,
+} from '../config/site.js';
+
+const prefix = prefixFor(Astro.url.pathname);
+
+const canais = [
+  {
+    icon: 'whatsapp-logo',
+    rotulo: 'WhatsApp',
+    valor: 'Pedidos e orçamento',
+    nota: 'Mensagem pré-preenchida com o seu pedido.',
+    href: linkWhatsApp(),
+    externo: false,
+    cta: 'Abrir conversa',
+  },
+  {
+    icon: 'instagram-logo',
+    rotulo: 'Instagram',
+    valor: INSTAGRAM_HANDLE,
+    nota: 'Fotos de estoque e novidades.',
+    href: INSTAGRAM_URL,
+    externo: true,
+    cta: 'Ver perfil',
+  },
+  {
+    icon: 'map-pin',
+    rotulo: 'Endereço',
+    valor: ENDERECO,
+    nota: 'A busca abre o Google Maps pelo nome da empresa.',
+    href: MAPA_URL,
+    externo: true,
+    cta: 'Abrir no mapa',
+  },
+  {
+    icon: 'clock',
+    rotulo: 'Horário',
+    valor: HORARIO,
+    nota: 'A confirmar com a BH Key.',
+    href: null,
+    externo: false,
+    cta: null,
+  },
+];
+---
+<Base
+  title="Contato — BH Key Distribuidora"
+  description="Fale com a BH Key Distribuidora pelo WhatsApp, Instagram ou Google Maps. Atendimento a chaveiros e revendas em todo o Brasil."
+>
+  <div class="shell py-10 sm:py-14">
+    <Regua esquerda="Contato" direita="WhatsApp · Instagram · Mapa" />
+    <h1 class="mt-6 max-w-[16ch] text-[2rem] leading-[1.06] sm:text-[2.5rem] lg:text-[3.1rem]">
+      Fale com a BH Key.
+    </h1>
+    <p class="mt-6 max-w-[62ch] text-base text-paper/75 sm:text-lg">
+      O pedido é fechado pelo WhatsApp. Mande a lista com os códigos dos itens
+      para confirmar disponibilidade e valor.
+    </p>
+
+    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+      <a href={linkWhatsApp()} class="btn btn--primaria" data-whatsapp>
+        <Icon name="whatsapp-logo" size={20} />
+        Pedir no WhatsApp
+      </a>
+      <a
+        href={INSTAGRAM_URL}
+        class="btn btn--secundaria"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Icon name="instagram-logo" size={20} />
+        Instagram
+      </a>
+    </div>
+
+    <div class="mt-10 grid gap-px border border-ink-line bg-ink-line sm:grid-cols-2">
+      {canais.map((c) => (
+        <div class="flex flex-col bg-ink px-4 py-5 sm:px-6 sm:py-6">
+          <div class="flex items-center gap-3">
+            <span class="shrink-0 text-green" aria-hidden="true">
+              <Icon name={c.icon} size={22} />
+            </span>
+            <p class="label-caps text-paper/60">{c.rotulo}</p>
+          </div>
+          <p class="mt-3 font-display text-xl font-semibold leading-snug sm:text-2xl">
+            {c.valor}
+          </p>
+          <p class="mt-2 max-w-[40ch] text-sm text-paper/70">{c.nota}</p>
+          {c.href && (
+            <a
+              href={c.href}
+              class="mt-4 inline-flex min-h-11 items-center gap-2 self-start py-1 text-sm text-green underline underline-offset-4 transition-colors hover:text-paper"
+              {...(c.externo ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            >
+              {c.cta}
+              <Icon name="arrow-right" size={14} />
+            </a>
+          )}
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-8 max-w-[70ch] border border-green/40 bg-green/10 px-4 py-4">
+      <p class="flex items-start gap-3 text-sm text-paper/85">
+        <span class="mt-0.5 shrink-0 text-green" aria-hidden="true">
+          <Icon name="warning" size={18} />
+        </span>
+        <span>
+          Endereço e horário de funcionamento ainda não foram informados pela BH Key
+          e aparecem como “A definir” até a confirmação.
+        </span>
+      </p>
+    </div>
+
+    <p class="mt-8 text-sm text-paper/70">
+      Prefere escolher antes de chamar?
+      <a href={`${prefix}catalogo.html`} class="ml-1 inline-flex min-h-11 items-center px-1 text-green underline underline-offset-4">
+        Abrir o catálogo
+      </a>
+    </p>
+  </div>
+</Base>

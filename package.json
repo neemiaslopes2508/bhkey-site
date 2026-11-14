@@ -1,0 +1,30 @@
+{
+  "name": "bhkey-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "BH Key Distribuidora — site estático v1 (catálogo B2B, pt-BR)",
+  "scripts": {
+    "build:css": "tailwindcss -i src/styles/main.css -o public/styles.css --minify",
+    "build:js": "esbuild src/js/main.js --bundle --minify --format=iife --outfile=public/app.js",
+    "build": "npm run build:css && npm run build:js && astro build",
+    "dev:css": "tailwindcss -i src/styles/main.css -o public/styles.css --watch",
+    "dev": "astro dev",
+    "serve": "node scripts/serve.mjs"
+  },
+  "dependencies": {
+    "@phosphor-icons/core": "^2.1.1",
+    "@phosphor-icons/web": "^2.1.2",
+    "@tailwindcss/vite": "^4.3.5",
+    "astro": "^7.4.12",
+    "embla-carousel": "^8.6.0",
+    "motion": "^14.14.0",
+    "tailwindcss": "^4.3.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.5",
+    "esbuild": "^0.28.0",
+    "playwright": "^1.57.0",
+    "sharp": "^0.34.0"
+  }
+}

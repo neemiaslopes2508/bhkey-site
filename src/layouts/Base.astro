@@ -1,0 +1,216 @@
+---
+import { prefixFor } from '../lib/paths.js';
+import { INSTAGRAM_URL, linkWhatsApp, MAPA_URL, ENDERECO, HORARIO } from '../config/site.js';
+import Icon from '../components/Icon.astro';
+
+const { title, description } = Astro.props;
+const prefix = prefixFor(Astro.url.pathname);
+const nav = [
+  { href: 'index.html', label: 'Início' },
+  { href: 'catalogo.html', label: 'Catálogo' },
+  { href: 'sobre.html', label: 'Sobre' },
+  { href: 'como-comprar.html', label: 'Como comprar' },
+  { href: 'contato.html', label: 'Contato' },
+];
+const pathNow = Astro.url.pathname;
+const isCurrent = (href) =>
+  (href === 'index.html' && (pathNow === '/' || pathNow.endsWith('/index.html'))) ||
+  (href !== 'index.html' && pathNow.includes(href.replace('.html', '')));
+---
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0d1015" />
+    <link rel="icon" type="image/png" href={`${prefix}favicon.png`} />
+    <link rel="stylesheet" href={`${prefix}styles.css`} />
+    <!-- Sem JS o menu mobile fica aberto e o carrossel rola na mão: nada some. -->
+    <noscript>
+      <style>
+        @media (max-width: 1023px) {
+          #menu-mobile { display: block !important; }
+        }
+      </style>
+    </noscript>
+  </head>
+  <body class="flex min-h-dvh flex-col bg-ink text-paper">
+    <a
+      href="#conteudo"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:bg-green focus:px-4 focus:py-3 focus:font-bold focus:text-ink"
+    >Pular para o conteúdo</a>
+
+    <header class="sticky top-0 z-40 border-b border-ink-line bg-ink">
+      <div class="shell flex h-16 items-center justify-between gap-4">
+        <a
+          href={`${prefix}index.html`}
+          class="flex min-h-11 shrink-0 items-center gap-2.5"
+          aria-label="BH Key Distribuidora — início"
+        >
+          <img src={`${prefix}img/logo-bhkey.png`} alt="" width="34" height="34" />
+          <span class="font-display text-base font-semibold leading-none sm:text-lg">
+            BH KEY <span class="text-green">Distribuidora</span>
+          </span>
+        </a>
+
+        <nav aria-label="Principal" class="hidden lg:block">
+          <ul class="flex items-center gap-1">
+            {nav.map((item) => (
+              <li>
+                <a
+                  href={`${prefix}${item.href}`}
+                  aria-current={isCurrent(item.href) ? 'page' : undefined}
+                  class:list={[
+                    'block px-3 py-2 text-sm transition-colors',
+                    isCurrent(item.href)
+                      ? 'font-medium text-green'
+                      : 'text-paper/75 hover:text-paper',
+                  ]}
+                >{item.label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div class="flex items-center gap-2">
+          <a
+            href={linkWhatsApp()}
+            class="hidden items-center gap-2 bg-green px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-paper sm:inline-flex"
+            data-whatsapp
+          >
+            <Icon name="whatsapp-logo" size={18} />
+            Pedir no WhatsApp
+          </a>
+          <button
+            type="button"
+            id="menu-toggle"
+            aria-expanded="false"
+            aria-controls="menu-mobile"
+            class="flex min-h-11 items-center gap-2 border border-ink-line px-3.5 text-sm lg:hidden"
+          >
+            <span class="sr-only">Abrir menu</span>
+            <span aria-hidden="true" class="flex flex-col gap-[3px]">
+              <span class="block h-px w-4 bg-current"></span>
+              <span class="block h-px w-4 bg-current"></span>
+              <span class="block h-px w-4 bg-current"></span>
+            </span>
+            Menu
+          </button>
+        </div>
+      </div>
+
+      <nav id="menu-mobile" aria-label="Principal (celular)" class="hidden border-t border-ink-line lg:hidden">
+        <ul class="shell py-2">
+          {nav.map((item) => (
+            <li>
+              <a
+                href={`${prefix}${item.href}`}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+                class:list={[
+                  'block border-b border-ink-line/70 py-3.5 text-base',
+                  isCurrent(item.href) ? 'font-medium text-green' : 'text-paper/85',
+                ]}
+              >{item.label}</a>
+            </li>
+          ))}
+          <li class="pt-4 pb-3">
+            <a
+              href={linkWhatsApp()}
+              class="flex min-h-12 items-center justify-center gap-2 bg-green px-4 py-3.5 font-medium text-ink"
+              data-whatsapp
+            >
+              <Icon name="whatsapp-logo" size={20} />
+              Pedir no WhatsApp
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="conteudo" class="flex-1">
+      <slot />
+    </main>
+
+    <footer class="mt-16 border-t border-ink-line">
+      <div class="shell grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
+        <div class="lg:col-span-4">
+          <img src={`${prefix}img/logo-bhkey.png`} alt="BH Key Distribuidora" width="48" height="48" />
+          <p class="mt-4 max-w-[38ch] text-sm leading-relaxed text-paper/70">
+            Distribuidora de material para chaveiro. Atendemos chaveiros e revendas em todo o Brasil.
+          </p>
+          <p class="label-caps mt-5 text-paper/60">Preços sob consulta</p>
+        </div>
+
+        <nav aria-label="Rodapé" class="lg:col-span-3">
+          <p class="label-caps mb-3 text-green">Navegação</p>
+          <ul class="-my-1 text-sm">
+            {nav.map((item) => (
+              <li>
+                <a
+                  href={`${prefix}${item.href}`}
+                  class="inline-flex min-h-10 items-center text-paper/75 transition-colors hover:text-paper"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div class="lg:col-span-3">
+          <p class="label-caps mb-3 text-green">Contato</p>
+          <ul class="-my-1 text-sm">
+            <li>
+              <a
+                href={linkWhatsApp()}
+                class="inline-flex min-h-10 items-center gap-2 text-paper/75 transition-colors hover:text-paper"
+                data-whatsapp
+              >
+                <Icon name="whatsapp-logo" size={16} />
+                WhatsApp — pedidos
+              </a>
+            </li>
+            <li>
+              <a
+                href={INSTAGRAM_URL}
+                class="inline-flex min-h-10 items-center gap-2 text-paper/75 transition-colors hover:text-paper"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <Icon name="instagram-logo" size={16} />
+                Instagram
+              </a>
+            </li>
+            <li>
+              <a
+                href={MAPA_URL}
+                class="inline-flex min-h-10 items-center gap-2 text-paper/75 transition-colors hover:text-paper"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <Icon name="map-pin" size={16} />
+                Mapa — endereço {ENDERECO.toLowerCase()}
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="lg:col-span-2">
+          <p class="label-caps mb-4 text-green">Horário</p>
+          <p class="text-sm text-paper/75">{HORARIO}</p>
+        </div>
+      </div>
+
+      <div class="border-t border-ink-line">
+        <div class="shell flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-4 text-sm text-paper/60">
+          <span>© {new Date().getFullYear()} BH Key Distribuidora</span>
+          <span class="font-mono">Pagamento via PIX · Envio para todo o Brasil</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src={`${prefix}app.js`} defer></script>
+  </body>
+</html>

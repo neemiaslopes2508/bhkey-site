@@ -1,0 +1,56 @@
+---
+// Card de produto do catálogo. Os atributos data-* são lidos pelo filtro/busca
+// em src/js/main.js — não renomear sem atualizar o JS.
+import { prefixFor } from '../lib/paths.js';
+import { linkWhatsApp, MENSAGEM_PRODUTO } from '../config/site.js';
+import Icon from './Icon.astro';
+
+const { item, categorias, borda = false } = Astro.props;
+const prefix = prefixFor(Astro.url.pathname);
+const categoria = categorias.find((c) => c.slug === item.categoria);
+const mensagem = MENSAGEM_PRODUTO(item.codigo, item.nome);
+---
+<article
+  class:list={['flex h-full flex-col bg-ink', borda && 'border border-ink-line']}
+  data-produto
+  data-categoria={item.categoria}
+  data-nome={item.nome}
+  data-codigo={item.codigo}
+>
+  <a
+    href={`${prefix}produto/${item.slug}.html`}
+    class="group block overflow-hidden bg-ink-soft"
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    <img
+      src={`${prefix}${item.img}`}
+      alt=""
+      width="600"
+      height="600"
+      loading="lazy"
+      decoding="async"
+      class="aspect-square w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
+    />
+  </a>
+  <div class="flex flex-1 flex-col gap-2 p-4">
+    <p class="label-caps text-green">{item.codigo}</p>
+    <h3 class="text-base leading-snug sm:text-lg">
+      <a
+        href={`${prefix}produto/${item.slug}.html`}
+        class="inline-flex min-h-11 items-center py-1 transition-colors hover:text-green"
+      >
+        {item.nome}
+      </a>
+    </h3>
+    {categoria && <p class="text-sm text-paper/60">{categoria.nome}</p>}
+    <a
+      href={linkWhatsApp(mensagem)}
+      class="mt-3 inline-flex items-center justify-center gap-2 border border-ink-line px-4 py-3 text-sm font-medium text-paper transition-colors hover:border-green hover:text-green"
+      data-whatsapp
+    >
+      <Icon name="whatsapp-logo" size={18} />
+      Pedir no WhatsApp
+    </a>
+  </div>
+</article>

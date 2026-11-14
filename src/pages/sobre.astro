@@ -1,0 +1,129 @@
+---
+import Base from '../layouts/Base.astro';
+import Regua from '../components/Regua.astro';
+import Icon from '../components/Icon.astro';
+import { prefixFor } from '../lib/paths.js';
+import { linkWhatsApp } from '../config/site.js';
+
+const prefix = prefixFor(Astro.url.pathname);
+
+// Cópia oficial do brief do cliente — NÃO reescrever.
+const MISSAO =
+  'Fornecer produtos e soluções de alta qualidade no ramo de distribuição de material para chaveiro atuando com agilidade, confiança e compromisso com o cliente, sempre pautados na ética, no respeito e na busca contínua pela excelência.';
+const VISAO =
+  'Ser reconhecida em todo o Brasil como a principal distribuidora de material para chaveiro, destacando-se pela inovação, confiabilidade e excelência no atendimento, promovendo relações duradouras e de valor com nossos clientes e parceiros.';
+const VALORES = [
+  'Agilidade',
+  'Confiança',
+  'Compromisso com o cliente',
+  'Ética',
+  'Respeito',
+  'Sustentabilidade',
+  'Inovação',
+];
+---
+<Base
+  title="Sobre — BH Key Distribuidora"
+  description="Missão, visão e valores da BH Key Distribuidora, distribuidora de material para chaveiro que atende chaveiros e revendas em todo o Brasil."
+>
+  <div class="shell py-10 sm:py-14">
+    <Regua esquerda="Sobre a BH Key" direita="Missão · Visão · Valores" />
+    <h1 class="mt-6 max-w-[20ch] text-[2rem] leading-[1.06] sm:text-[2.5rem] lg:text-[3.1rem]">
+      Distribuidora de material para chaveiro.
+    </h1>
+    <p class="mt-6 max-w-[62ch] text-base text-paper/75 sm:text-lg">
+      A BH Key Distribuidora trabalha com material para chaveiro voltado a
+      profissionais e revendas: chaves canivete, controles remotos, carcaças e
+      chaves automotivas, com atendimento pelo WhatsApp.
+    </p>
+
+    <figure class="mt-9 border border-ink-line bg-ink-soft">
+      <img
+        src={`${prefix}img/produtos/editorial-estoque-pessoa.jpg`}
+        alt="Equipe da BH Key no estoque, ao lado de caixas de produto identificadas."
+        width="600"
+        height="600"
+        loading="lazy"
+        decoding="async"
+        class="aspect-[16/9] w-full object-cover sm:aspect-[21/9]"
+      />
+      <figcaption class="label-caps border-t border-ink-line px-4 py-3 text-paper/60">
+        Estoque BH Key · foto de amostra
+      </figcaption>
+    </figure>
+  </div>
+
+  <!-- Missão e Visão — seção em papel -->
+  <section class="border-y border-ink-line bg-paper text-ink" aria-labelledby="mv-titulo">
+    <div class="shell py-12 sm:py-16">
+      <Regua claro esquerda="Missão e visão" direita="Texto oficial" />
+      <h2 id="mv-titulo" class="sr-only">Missão e visão</h2>
+
+      <div class="mt-8 grid gap-10 lg:grid-cols-2 lg:gap-14">
+        <div>
+          <h3 class="text-xl text-green-ink sm:text-2xl">Missão</h3>
+          <p class="mt-4 max-w-[52ch] text-base leading-relaxed text-ink/80 sm:text-lg">
+            {MISSAO}
+          </p>
+        </div>
+        <div class="border-t border-ink/20 pt-10 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-14">
+          <h3 class="text-xl text-green-ink sm:text-2xl">Visão</h3>
+          <p class="mt-4 max-w-[52ch] text-base leading-relaxed text-ink/80 sm:text-lg">
+            {VISAO}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Valores -->
+  <section class="border-b border-ink-line" aria-labelledby="valores-titulo">
+    <div class="shell py-12 sm:py-16">
+      <Regua esquerda="Valores" direita={`${VALORES.length} princípios`} />
+      <h2 id="valores-titulo" class="mt-6 text-2xl sm:text-3xl lg:text-4xl">
+        O que orienta o atendimento.
+      </h2>
+
+      <ul class="mt-8 grid gap-px border border-ink-line bg-ink-line sm:grid-cols-2 lg:grid-cols-4">
+        {VALORES.map((v, i) => (
+          <li
+            class:list={[
+              'flex items-center gap-3 bg-ink px-4 py-5 sm:px-5 sm:py-6',
+              i === VALORES.length - 1 && VALORES.length % 2 === 1 && 'sm:col-span-2',
+            ]}
+          >
+            <span class="shrink-0 text-green" aria-hidden="true">
+              <Icon name="check" size={20} />
+            </span>
+            <span class="font-display text-base font-semibold leading-snug sm:text-lg">{v}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="border-b border-ink-line bg-ink-soft" aria-labelledby="sobre-cta-titulo">
+    <div class="shell flex flex-col items-start gap-7 py-10 sm:flex-row sm:items-center sm:justify-between sm:py-14">
+      <div>
+        <Regua esquerda="Próximo passo" direita="WhatsApp" />
+        <h2 id="sobre-cta-titulo" class="mt-5 text-2xl sm:text-3xl">
+          Fale com a BH Key.
+        </h2>
+        <p class="mt-4 max-w-[52ch] text-paper/75">
+          Envie sua lista de material para chaveiro e confira disponibilidade e valor.
+        </p>
+      </div>
+      <div class="flex shrink-0 flex-col gap-3 sm:flex-row">
+        <a href={linkWhatsApp()} class="btn btn--primaria" data-whatsapp>
+          <Icon name="whatsapp-logo" size={18} />
+          Pedir no WhatsApp
+        </a>
+        <a href={`${prefix}catalogo.html`} class="btn btn--secundaria">
+          Ver catálogo
+          <Icon name="arrow-right" size={18} />
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>

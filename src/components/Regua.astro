@@ -1,0 +1,14 @@
+---
+// Cabeçalho de seção no formato de fio de catálogo de peças:
+// rótulo mono + fio hairline + meta mono. O rótulo traz informação nova,
+// não repete o título (evita o padrão "badge acima do headline").
+// Tom escuro por padrão; `claro` inverte para seções em papel.
+const { esquerda, direita, claro = false, class: className = '' } = Astro.props;
+---
+<div class:list={['flex flex-wrap items-center gap-x-3 gap-y-1 sm:gap-x-4', className]}>
+  <span class:list={['label-caps shrink-0', claro ? 'text-green-ink' : 'text-green']}>{esquerda}</span>
+  <span class:list={['h-px flex-1', claro ? 'bg-ink/20' : 'bg-ink-line']} aria-hidden="true"></span>
+  {direita && (
+    <span class:list={['label-caps shrink-0', claro ? 'text-ink/60' : 'text-paper/60']}>{direita}</span>
+  )}
+</div>
