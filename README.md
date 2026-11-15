@@ -1,11 +1,12 @@
-# BH Key Distribuidora — site v3 (estático, pt-BR)
+# BH Key Distribuidora — site v4 (estático, pt-BR)
 
-Site institucional + catálogo B2B da BH Key Distribuidora (chaves automóticas e
-material para chaveiro). É o destino do QR code dos displays de balcão: abre em
-celular, um só nível de scroll, botões grandes. O canal de pedido é o WhatsApp.
+Site institucional + catálogo B2B da BH Key Distribuidora (material para
+chaveiro). É o destino do QR code dos displays de balcão: abre em celular,
+com navegação curta, botões grandes e pedido montado no próprio site.
 
-**Nada de e-commerce no v1:** sem carrinho, sem checkout, sem login, sem preços
-na página (preço é "sobre consulta").
+O fluxo é **catálogo → lista com quantidade → WhatsApp**. Não é e-commerce:
+não há checkout, login, pagamento online nem preço publicado. O valor e a
+disponibilidade são confirmados no atendimento.
 
 > **Dados de amostra:** os 14 itens do catálogo são fictícios, criados para
 > demonstrar o layout. Estão marcados com `"amostra": true` no JSON e com um
@@ -14,9 +15,29 @@ na página (preço é "sobre consulta").
 
 ---
 
+## O que a v4 acrescenta
+
+- **Lista de pedidos** com quantidade por item, removê-los, limpar e enviar
+  tudo em uma mensagem só de WhatsApp. A lista fica no `localStorage` do
+  navegador (chave `bhkey:lista:v1`), sobrevive à troca de página e ao reload
+  e não passa por servidor.
+- **Adicionar à lista** nos cards do catálogo, nos destaques da home e na
+  página do produto, com estado “Na lista · N” e aviso de confirmação.
+- **Gaveta no desktop / folha inferior no celular**, com edição de quantidade
+  e resumo do pedido. A mensagem leva código, nome e quantidade de cada item.
+- **Barra fixa no celular** quando há itens, com contador e atalho para a lista.
+- **Contador no cabeçalho** em todas as 20 páginas.
+- **Busca por código tolerante a hífen**: `bkcv101`, `BK CV 101` e `BK-CV-101`
+  chegam ao mesmo item; continua aceitando nome sem acento.
+- **Acabamento v4**: raio 10/14/18/20, header com “Minha lista”, hero com
+  faixa de confiança, categorias em 2 colunas no celular, seção de três passos
+  e bloco institucional na home.
+
+---
+
 ## Como rodar
 
-### A) Abrir direto da pasta (é o fluxo principal)
+### A) Abrir direto da pasta
 
 O `dist/` usa **caminhos relativos**, então funciona com duplo clique, sem
 servidor e sem instalar nada:
@@ -24,9 +45,11 @@ servidor e sem instalar nada:
 1. Copie a pasta `dist/` para o PC do cliente (ou descompacte o zip lá).
 2. Abra `dist/index.html` no navegador.
 
-### B) Servidor local (opcional)
+Ao abrir por `file://`, alguns navegadores isolam o `localStorage`; a lista
+funciona durante a visita, mas a persistência entre páginas é garantida mesmo
+quando o site é servido (GitHub Pages, hospedagem normal).
 
-Útil para testar a rota de 404 e o comportamento de menu em celular real:
+### B) Servidor local (opcional)
 
 ```bash
 npm install     # só na primeira vez
@@ -34,8 +57,8 @@ npm run build   # regenera CSS, JS e o dist/
 npm run serve   # http://localhost:4173
 ```
 
-No Windows, `abrir-site.bat` faz 2 em 1: abre o `dist/index.html` direto, e se
-você preferir servidor, `abrir-site.bat serve`.
+No Windows, `abrir-site.bat` abre o `dist/index.html` direto; com `serve`,
+sobe o servidor.
 
 ---
 
@@ -48,10 +71,12 @@ você preferir servidor, `abrir-site.bat serve`.
 | `npm run build:js` | esbuild → `public/app.js` (bundle IIFE, minificado) |
 | `npm run serve` | servidor estático em `dist/` (porta 4173) |
 | `npm run dev` | Astro dev server (hot reload) |
-| `node scripts/shot-mobile.mjs` | screenshots 390×844 + verificações (precisa de Playwright) |
-| `node scripts/design-qa.mjs` | QA de contraste, raio, tipografia, alvo de toque e sombra |
-| `node scripts/viewport-check.mjs` | 360/390/430/768/1024/1440: rolagem, menu, fontes e fotos |
-| `node scripts/verifica-fixes.mjs` | Esc/foco do menu, deep links, alvos, único WhatsApp (com `serve`) |
+| `node scripts/qa-v4.mjs` | 20 páginas em 360/390/430, fluxo completo da lista, busca, deep links, links/assets e console. Precisa do `serve` na porta 4188. |
+| `node scripts/qa-v4-visual.mjs` | screenshots de home/catálogo/produto e da gaveta (390 e 1440). |
+| `node scripts/design-qa.mjs` | contraste, raio, tipografia, alvo de toque e sombra nas 20 páginas (file://). |
+| `node scripts/viewport-check.mjs` | 360→1440: rolagem, menu, fontes e requisições. |
+| `node scripts/shot-mobile.mjs` | screenshots 390×844 + verificações de interação e no-JS. |
+| `node scripts/verifica-fixes.mjs` | Esc/foco do menu, deep links, alvos, único WhatsApp (com `serve`). |
 
 ---
 
@@ -60,19 +85,21 @@ você preferir servidor, `abrir-site.bat serve`.
 ```
 bhkey-site/
 ├── src/
-│   ├── pages/            # 6 rotas: index, catalogo, sobre, como-comprar, contato, 404
+│   ├── pages/            # index, catalogo, sobre, como-comprar, contato, 404
 │   │   └── produto/[slug].astro   # 14 páginas de produto (geradas do JSON)
-│   ├── layouts/Base.astro
-│   ├── components/       # Regua, ProdutoCard, AvisoAmostra, Icon
-│   ├── config/site.js    # ← ÚNICA fonte do WhatsApp/Instagram
-│   ├── data/catalogo.json# ← catálogo (14 itens de amostra)
-│   ├── js/main.js        # filtro + busca + carrossel + motion
+│   ├── layouts/Base.astro         # header, footer, botão da lista, <ListaPedido/>
+│   ├── components/       # Regua, ProdutoCard, AvisoAmostra, ListaPedido, Icon
+│   ├── config/site.js    # ← ÚNICA fonte do WhatsApp/Instagram e das mensagens
+│   ├── data/catalogo.json# catálogo (14 itens de amostra)
+│   ├── js/main.js        # menu, lista, busca, quantidade, carrossel
+│   ├── js/lista.js       # estado da lista (localStorage) e link do WhatsApp
 │   ├── lib/paths.js      # auxiliar de caminhos relativos
-│   └── styles/main.css   # tokens Tailwind v4 (tema)
+│   └── styles/main.css   # tokens Tailwind v4 + componentes
 ├── public/               # copiados sem mudança para dist/ (css, js, img, fonts)
-├── scripts/              # build/QA (serve, shot-mobile, design-qa, viewport-check…)
+├── scripts/              # build/QA
 ├── dist/                 # ← build estático final (entrega)
-└── screenshots/          # 390×844 por página
+├── docs/                 # espelho do dist/ publicado no GitHub Pages
+└── screenshots/          # 390×844 por página (gerado pelo shot-mobile)
 ```
 
 ---
@@ -88,8 +115,18 @@ export const WHATSAPP_NUMERO = '5531999999999';  // ← PLACEHOLDER
 ```
 
 Formato: `55` + DDD + número, **sem espaços, sem `+`, sem traços**.
-Depois rode `npm run build`. Não há outro `wa.me` espalhado pelo código —
-todos os 103 links saem desse valor via `linkWhatsApp()`.
+Depois rode `npm run build`. Todos os 102 links `wa.me` do build saem desse
+valor, inclusive o da lista.
+
+### Mensagens do WhatsApp
+
+No mesmo arquivo:
+
+- `WHATSAPP_MENSAGEM_PADRAO` — conversa geral.
+- `MENSAGEM_PRODUTO(codigo, nome)` — pedido de um item.
+- `MENSAGEM_LISTA(itens)` — lista completa, um item por linha:
+  `• 2x BK-CV-101 — Chave canivete 2 botões com lâmina`.
+- `linkWhatsApp(mensagem)` — monta o `wa.me` já codificado.
 
 ### Conteúdo do catálogo
 
@@ -97,6 +134,7 @@ todos os 103 links saem desse valor via `linkWhatsApp()`.
 
 ```json
 {
+  "slug": "chave-canivete-2-botoes",
   "codigo": "BK-CV-101",
   "nome": "Chave canivete 2 botões com lâmina",
   "categoria": "chaves-canivete",
@@ -106,8 +144,11 @@ todos os 103 links saem desse valor via `linkWhatsApp()`.
 }
 ```
 
-`amostra: true` mantém o item marcado como dado de demonstração.
-Ao trocar pelo catálogo real, mude para `false` e apague o `_aviso` do topo.
+`slug` é a URL da página; `img` é o caminho a partir de `public/`. O botão de
+adicionar lê esses campos do próprio card — não há segunda lista de produtos.
+
+`amostra: true` mantém o item marcado como demonstração. Ao trocar pelo
+catálogo real, mude para `false` e apague o `_aviso` do topo.
 
 ### Textos fixos
 
@@ -116,51 +157,53 @@ cliente** — não reescreva.
 
 ---
 
-## Bibliotecas e por que estão aqui
+## Como a lista funciona
 
-| Biblioteca | Papel | Justificativa de uma linha |
-|---|---|---|
-| **Astro 7** | gerador estático | Output flat HTML sem JS de framework por padrão — o QR abre rápido no celular e o site roda de `file://`. |
-| **Tailwind CSS v4** | estilos | Tokens custom no `@theme` (nada de look shadcn); CLI compilada no build, zero CSS em runtime. |
-| **Motion** | microinteração | Transições de 150–200ms e elevação de card de no máximo 2px, com gating em `prefers-reduced-motion`. Nada que esconda conteúdo. |
-| **Embla Carousel** | row de destaque | Arrasto no toque, sem dependência de CSS de scroll-snap, com fallback para scroll nativo se o JS falhar. |
-| **Phosphor Icons** | ícones | SVG inline no build (via `Icon.astro`): sem CDN, sem emoji, herda a cor por `currentColor`. |
-| **Fontshare** | tipografia | Satoshi (títulos 700 e corpo 400/500) + Azeret Mono (códigos) — **auto-hospedado em `public/fonts/`, sem CDN em runtime**. Clash Display saiu no v3. |
-| **esbuild** | bundle do JS | Bundle minificado de `main.js` (filtro, busca, carrossel) em um só arquivo. |
-| **Playwright** | QA | Screenshots 390×844 e as verificações de interação/a11y. Só em dev. |
-
-### Lenis (smooth scroll) — deliberadamente fora
-
-O site é destino de QR code em celular e a faixa de destaque já usa arrasto.
-Uma camada de smooth scroll **briga com o arrasto do carrossel**, adiciona
-latência no primeiro toque e não melhora nada em página de catálogo. Scroll
-nativo do navegador + Embla cobre o caso de uso; por isso Lenis ficou de fora.
+- Estado em `src/js/lista.js`; UI em `src/js/main.js` e
+  `src/components/ListaPedido.astro`.
+- Cada linha guarda `slug`, `codigo`, `nome`, `categoria`, `img` e `qtd`
+  (1 a 999). Itens com o mesmo `slug` somam quantidade.
+- `localStorage` pode falhar (modo privado antigo, `file://` restrito); nesse
+  caso a lista segue em memória durante a visita, sem quebrar a página.
+- Abrir a gaveta usa `role="dialog"`, `aria-modal`, foco preso, Esc para
+  fechar e devolução do foco ao botão de origem. A barra inferior some com a
+  gaveta aberta e volta ao fechar.
+- A lista **não reserva estoque**: é uma mensagem de orçamento.
 
 ---
 
-## Verificação
+## Bibliotecas e por que estão aqui
 
-`node scripts/design-qa.mjs` → **TUDO OK** nas 20 páginas (todas as 14 de
-produto incluídas; contraste AA, alvo de toque ≥48px com exceção única do botão
-de menu (44×44, especificação da direção), corpo 16px, h1 32px, raio dentro da
-escala 8/12/16/24/pill, títulos em Satoshi 700 com tracking −0.02em, sem peso
-600, sem faixa clara full-bleed, sem matriz `gap-px`, a única sombra do site e
-`text-wrap: balance`).
+| Biblioteca | Papel | Justificativa |
+|---|---|---|
+| **Astro 7** | gerador estático | HTML plano, sem JS de framework; roda de `file://`. |
+| **Tailwind CSS v4** | estilos | Tokens no `@theme`, CSS compilado no build, zero runtime. |
+| **Embla Carousel** | destaques | Arrasto no toque com fallback para scroll nativo. |
+| **Phosphor Icons** | ícones | SVG inline no build, sem CDN, herda `currentColor`. |
+| **Satoshi / Azeret Mono** | tipografia | Auto-hospedadas em `public/fonts/`, sem CDN em runtime. |
+| **esbuild** | bundle do JS | Um `app.js` minificado com menu, lista, busca e carrossel. |
+| **Playwright** | QA | Fluxos, screenshots e auditoria de design. Só em dev. |
 
-`node scripts/viewport-check.mjs` → **VIEWPORT: TUDO OK**: sem rolagem
-horizontal em 360/390/430/768/1024/1440, botão de menu some no desktop, folha
-do menu com raio 16 e alvos ≥48px (menu 44), fontes Satoshi/Azeret carregadas e
-nenhuma requisição falha.
+Sem framework de UI, sem biblioteca de estado, sem dependência nova para a
+lista: `localStorage` + DOM resolve o caso de 14 itens.
 
-`node scripts/shot-mobile.mjs` → **todas as verificações passaram**:
-screenshots 390×844 de home, catálogo, produto, sobre, como comprar, contato e
-404, mais asserções de um `h1` por página, sem rolagem horizontal, sem imagem
-quebrada, sem erro de console, filtro + busca + contador + estado vazio +
-deep-link `?cat=`, setas do carrossel, menu mobile, anel de foco visível e uma
-passagem **com JavaScript desabilitado**.
+---
 
-Build: 20 páginas, **zero caminhos absolutos** em `dist/` — o site abre
-direto da pasta. Páginas aninhadas (`produto/`) usam prefixos `../`.
+## Verificação (v4)
+
+- `node scripts/qa-v4.mjs` → **0 falhas**: 20 páginas em 360/390/430 sem
+  rolagem horizontal e com um `h1`; fluxo de adicionar, somar, diminuir,
+  remover, limpar, persistir no reload e montar a mensagem com os dois itens;
+  busca `bkcv101`; filtro `?cat=` + `?q=`; estado vazio; 0 erro de console ou
+  requisição falha; 0 link/asset quebrado.
+- `node scripts/design-qa.mjs` → **TUDO OK** nas 20 páginas (contraste AA,
+  alvos ≥48px com menu 44, raio 10–20/pill, Satoshi 700 com tracking −0.02em,
+  sem peso 600, sem faixa clara, sombra única, `text-wrap: balance`).
+- `node scripts/viewport-check.mjs` → **TUDO OK** em 360/390/430/768/1024/1440.
+- `node scripts/shot-mobile.mjs` → **todas as verificações passaram**,
+  inclusive carrossel, menu, foco e a passagem com JavaScript desabilitado.
+- Build: **20 páginas**, 102 links de WhatsApp em um único número, **0 “R$”**,
+  aviso de amostra em 15 páginas, `dist/` com 2,2 MB.
 
 ---
 
@@ -168,19 +211,19 @@ direto da pasta. Páginas aninhadas (`produto/`) usam prefixos `../`.
 
 As fotos são de catálogos públicos de distribuidoras/lojas de chaves
 brasileiras, usadas como ilustração de demonstração — **não é o estoque da
-BH Key**. Foram normalizadas para fundo branco, 1000×1000 (categorias 1200×900,
-capa 2100×700) e recebem o prefixo `v2-`:
+BH Key**. Fundo branco, 1000×1000 (categorias 1200×900), prefixo `v2-`.
 
 | Arquivo | Uso |
 |---|---|
-| `public/img/produtos/v2-<slug>.jpg` | card e página de produto (14), hero da home, figura da página Sobre, bloco "Condição especial" |
-| `public/img/categorias/v2-<categoria>.jpg` | cards de categoria da home (4) |
-| `public/img/v2-hero.jpg` | capa 3:1 da v2 — **mantido no `public/` mas não é mais usado** no layout v3 |
+| `public/img/produtos/v2-<slug>.jpg` | card, página do produto, hero da home e figura do Sobre |
+| `public/img/categorias/v2-<categoria>.jpg` | cards de categoria da home |
+| `public/img/v2-hero.jpg` | capa 3:1 antiga — mantida, não usada no layout |
 
-Origem de cada foto documentada em `v2-arte/ARTE.md` (na pasta do projeto da
-v2). Ao chegar as fotos do cliente, basta substituir os arquivos **com os
-mesmos nomes** e rebuildar. Os recortes do Instagram da v1 foram removidos por
-inteiro — nem `public/` nem `dist/` os têm mais.
+Origem de cada foto em `v2-arte/ARTE.md` (pasta da v2). Ao chegar as fotos do
+cliente, substitua os arquivos **com os mesmos nomes** e rode `npm run build`.
+
+**Foto errada conhecida:** `v2-controle-remoto-2-botoes-dobravel.jpg` mostra um
+remoto de 3 botões para o item “2 botões com chave dobrável”.
 
 ---
 
@@ -189,77 +232,21 @@ inteiro — nem `public/` nem `dist/` os têm mais.
 | Status | Item |
 |---|---|
 | ✅ Real | Missão, visão e valores (literal do cliente) |
-| ✅ Real | Categorias (4) e textos de página em pt-BR |
-| ✅ Real | Ícones, fontes, logo, cores da marca |
+| ✅ Real | Categorias (4), textos de página e identidade preto/verde |
+| ✅ Real | Ícones, fontes, logo |
+| ✅ Funcional | Lista, quantidades, busca, filtros, deep links, WhatsApp |
 | ⏳ Amostra | 14 itens de catálogo (marcados `amostra: true`) |
-| ⏳ Amostra | Fotos (catálogo de distribuidoras — ver "Amostras de imagem") |
+| ⏳ Amostra | Fotos (catálogo de distribuidoras) |
 | ⛔ Placeholder | Número do WhatsApp (`5531999999999`) |
 | ⛔ Placeholder | Endereço, horário, pedido mínimo, regras de frete |
 
 ---
 
-## v1.1 — correções da revisão independente (QA)
+## Histórico curto
 
-- Menu do celular fecha com a tecla Esc e devolve o foco ao botão.
-- Título do card e links do contato com área de toque de 48px.
-- Filtro e busca do catálogo passam a aparecer no endereço (`?cat=carcasas&q=chave`),
-  então dá para mandar o link já filtrado; o campo vem preenchido ao abrir.
-- Bloco de destaque deixou de falar em "oferta da semana" (a loja não confirmou
-  esse programa); virou "Condição especial".
-- `public/styles.css` regerado no build.
-
----
-
-## v2 — fotos reais + acabamento
-
-Pedido do cliente sobre a v1.1 aprovada. **Não é redesign de marca**: identidade
-preto/verde, tipografia forte, códigos em monoespaçada e a estrutura de 5
-páginas continuam iguais.
-
-- **Fotos**: os 14 itens, as 4 categorias, a capa da home e a página Sobre
-  passam a usar fotos reais de catálogo (fundo branco, prefixo `v2-`).
-  Nenhum recorte do Instagram sobra em `public/` nem em `dist/`.
-  `v2-braco-chave-em-branco.jpg` teve o fundo de papel cinza normalizado para
-  branco por segmentação de silhueta (mesmo recorte, mesma geometria).
-- **Acabamento**: sistema de espaçamento em múltiplos de 8, escala de tipografia
-  fixa, padrão único de componentes (card, chip, botão, busca, régua de seção,
-  rodapé) e responsivo conferido em 360/390/768/1024/1440.
-- **Removidos**: `scripts/crop-photos.mjs`, `scripts/detect-bands.mjs` e
-  `scripts/detect-grid.mjs` — ferramentas da v1 que geravam os recortes.
-
----
-
-## v3 — reformulação visual (mobile-first, premium)
-
-Troca de camada visual por cima do v2 aprovado: **estrutura, textos, URLs,
-comportamento e integrações não mudaram** — as 20 páginas e o catálogo são os
-mesmos, e os testes de `shot-mobile.mjs`/`verifica-fixes.mjs` seguem verdes.
-
-- **Cor — grafite**: base `#0b0d10`, superfícies `#12161a` / `#171c21`, fios
-  `rgba(255,255,255,.08)`, texto `#f5f5ee` / `#a3abb4`, verde `#85b339`
-  (pressionado `#4f7119`). Fora as duas faixas off-white ("Condição especial"
-  na home e "Missão e visão" em Sobre), que viraram **card grafite com a cópia
-  oficial intacta**. Único gradiente do site: o scrim escuro da foto da hero.
-- **Raio**: tokens `--radius-sm/md/lg/xl/pill` (8/12/16/24/9999) — card,
-  painel, chip, busca e CTAs arredondados. As matrizes `gap-px` do v2 viraram
-  cards com respiro real de 12/16px. Uma única sombra no site
-  (`--shadow-sheet`, cabeçalho + folha do menu).
-- **Tipo**: Clash Display removida (`public/fonts/ClashDisplay-*.woff2`
-  apagados). Satoshi 700 com −0.02em nos títulos, 400/500 no corpo, Azeret Mono
-  só em códigos e rótulos; pesos usados: 400/500/700.
-- **Header**: fixo, translúcido com `backdrop-blur(12px)`; botão de menu
-  redondo 44px com SVG de traço 1.5 (ícone troca por CSS conforme
-  `aria-expanded`); menu mobile em folha arredondada recuada 16px.
-- **Hero**: composição única com **uma** foto de produto real em ladrilho
-  branco dentro de card 24 (a faixa `img/v2-hero.jpg` saiu da home e do Sobre)
-  + dois CTAs pill. Toda foto de fundo branco passa a morar em ladrilho branco
-  dentro de card grafite.
-- **Catálogo**: grade de 2 colunas no celular / 3 no tablet / 4 no desktop,
-  busca pill de 48px, chips pill de 48px — os IDs e a lógica de filtro/busca
-  são os mesmos da v2.
-- **Motion**: 150–200ms, elevação de card ≤2px, tudo sob
-  `prefers-reduced-motion`.
-- **QA v3**: `design-qa.mjs` passou a cobrir as regras novas (escala de raio,
-  tracking dos títulos, sem peso 600, sem faixa clara, sem `gap-px`, sombra
-  única) e `scripts/viewport-check.mjs` é novo (larguras 360→1440, menu,
-  fontes, requisições).
+- **v1/v1.1** — site estático, catálogo, busca, WhatsApp.
+- **v2** — fotos reais de catálogo, grid de 8 pontos, componentes únicos.
+- **v3** — reformulação visual: grafite + verde, raio em tudo, Satoshi,
+  header fixo, hero de foto única.
+- **v4** — lista de pedidos com quantidade, gaveta/folha, barra mobile,
+  contador no header, busca por código sem hífen e acabamento 14–20.

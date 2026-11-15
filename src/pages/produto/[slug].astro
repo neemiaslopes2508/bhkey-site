@@ -82,23 +82,76 @@ const proximo = catalogo.itens[(indice + 1) % catalogo.itens.length];
             {item.descricao}
           </p>
 
-          <p class="mt-6 text-sm text-paper-dim">
-            Preço sob consulta — valor confirmado no atendimento.
-          </p>
+          <!-- Painel de compra: quantidade + adicionar à lista. O preço nunca
+               aparece por extenso; o valor é confirmado no WhatsApp. -->
+          <div class="card mt-6 p-4 sm:p-6">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <p class="label-caps text-paper-dim">Preço</p>
+                <p class="mt-1 text-base font-medium">Sob consulta</p>
+              </div>
+              <div class="flex items-center gap-3">
+                <label for="produto-qtd" class="label-caps text-paper-dim">Qtd.</label>
+                <div class="stepper" data-stepper>
+                  <button type="button" class="stepper-btn" data-menos aria-label="Diminuir quantidade">
+                    <Icon name="minus" size={16} />
+                  </button>
+                  <input
+                    id="produto-qtd"
+                    class="stepper-campo"
+                    type="number"
+                    inputmode="numeric"
+                    min="1"
+                    max="999"
+                    step="1"
+                    value="1"
+                    aria-label="Quantidade"
+                  />
+                  <button type="button" class="stepper-btn" data-mais aria-label="Aumentar quantidade">
+                    <Icon name="plus" size={16} />
+                  </button>
+                </div>
+              </div>
+            </div>
 
-          <div class="mt-6 max-w-[46rem]">
+            <button
+              type="button"
+              class="btn-add btn-add--grande mt-4"
+              data-add
+              data-qtd-origem="produto-qtd"
+              data-slug={item.slug}
+              data-codigo={item.codigo}
+              data-nome={item.nome}
+              data-categoria={item.categoria}
+              data-img={item.img}
+              aria-label={`Adicionar ${item.nome} à lista`}
+            >
+              <span class="btn-add-icone" aria-hidden="true">
+                <Icon name="plus" size={20} class="btn-add-mais" />
+                <Icon name="check" size={20} class="btn-add-check" />
+              </span>
+              <span data-add-texto>Adicionar à lista</span>
+              <span class="btn-add-qtd" data-add-contador hidden>0</span>
+            </button>
+
+            <p class="mt-3 text-center text-sm text-paper-dim">
+              A lista fica salva neste navegador até você enviar o pedido.
+            </p>
+          </div>
+
+          <div class="mt-4 max-w-[46rem]">
             <AvisoAmostra aviso={catalogo._aviso} />
           </div>
 
           <a
             href={linkWhatsApp(mensagem)}
-            class="btn btn--primaria btn--block mt-6"
+            class="btn-whatsapp-link mt-4"
             data-whatsapp
           >
-            <Icon name="whatsapp-logo" size={20} />
-            Pedir no WhatsApp
+            <Icon name="whatsapp-logo" size={18} />
+            Pedir este item direto no WhatsApp
           </a>
-          <p class="mt-4 text-center text-sm text-paper-dim sm:text-left">
+          <p class="mt-2 text-center text-sm text-paper-dim sm:text-left">
             A mensagem já vai com o código <span class="font-mono">{item.codigo}</span> e o nome do item.
           </p>
 

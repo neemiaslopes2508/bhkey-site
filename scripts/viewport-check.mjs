@@ -143,7 +143,7 @@ for (const largura of LARGURAS) {
     ).length,
   }));
   nota(d.scrollW <= d.innerW, `360px · menu aberto — sem rolagem horizontal (${d.scrollW}/${d.innerW})`);
-  nota(d.raio === '16px', `360px · folha do menu com raio 16 (medido ${d.raio})`);
+  nota(d.raio === '18px', `360px · folha do menu com raio 18 (medido ${d.raio})`);
   nota(d.sombra.includes('32px'), `360px · folha com a sombra única (medido ${d.sombra})`);
   nota(d.alturaAlvo >= 44, `360px · item do menu com alvo ≥44px (medido ${d.alturaAlvo}px)`);
   nota(d.iconesVisiveis === 1, `360px · botão do menu mostra um ícone só (mostrou ${d.iconesVisiveis})`);

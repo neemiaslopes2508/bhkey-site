@@ -4,7 +4,7 @@ import Regua from '../components/Regua.astro';
 import Icon from '../components/Icon.astro';
 import catalogo from '../data/catalogo.json';
 import { prefixFor } from '../lib/paths.js';
-import { linkWhatsApp } from '../config/site.js';
+import { linkWhatsApp, ENDERECO, HORARIO } from '../config/site.js';
 
 const prefix = prefixFor(Astro.url.pathname);
 
@@ -40,7 +40,8 @@ const VALORES = [
       <p class="mt-4 max-w-[62ch] text-base text-paper-dim">
         A BH Key Distribuidora trabalha com material para chaveiro voltado a
         profissionais e revendas: chaves canivete, controles remotos, carcaças e
-        chaves automotivas, com atendimento pelo WhatsApp.
+        chaves automotivas, com atendimento pelo WhatsApp. No site, você monta a
+        lista com quantidade e envia o pedido em uma mensagem.
       </p>
 
       <figure class="foto foto--card mt-8 max-w-[42rem]">
@@ -109,10 +110,43 @@ const VALORES = [
     </div>
   </section>
 
+  <!-- Atendimento: só o que está confirmado; o resto permanece “A definir”. -->
+  <section class="border-b border-ink-line" aria-labelledby="atendimento-titulo">
+    <div class="shell py-10 sm:py-12">
+      <Regua esquerda="Atendimento" direita="Dados confirmados" />
+      <h2 id="atendimento-titulo" class="mt-6 max-w-[24ch] text-2xl lg:text-3xl">
+        O que já está definido.
+      </h2>
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="card p-4 sm:p-6">
+          <p class="label-caps text-paper-dim">Pagamento</p>
+          <p class="mt-2 text-xl font-bold">PIX</p>
+        </div>
+        <div class="card p-4 sm:p-6">
+          <p class="label-caps text-paper-dim">Envio</p>
+          <p class="mt-2 text-xl font-bold">Todo o Brasil</p>
+        </div>
+        <div class="card p-4 sm:p-6">
+          <p class="label-caps text-paper-dim">Endereço</p>
+          <p class="mt-2 text-xl font-bold">{ENDERECO}</p>
+        </div>
+        <div class="card p-4 sm:p-6">
+          <p class="label-caps text-paper-dim">Horário</p>
+          <p class="mt-2 text-xl font-bold">{HORARIO}</p>
+        </div>
+      </div>
+      <p class="mt-6 max-w-[64ch] text-sm text-paper-dim">
+        Endereço e horário ainda não foram informados pela BH Key e aparecem
+        como “A definir” até a confirmação. Prazo de entrega, frete e pedido
+        mínimo são combinados no atendimento.
+      </p>
+    </div>
+  </section>
+
   <!-- CTA -->
   <section class="border-b border-ink-line" aria-labelledby="sobre-cta-titulo">
     <div class="shell py-10 sm:py-12">
-      <div class="card flex flex-col items-start gap-8 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-10">
+      <div class="card flex flex-col items-start gap-8 p-6 sm:p-10 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <Regua esquerda="Próximo passo" direita="WhatsApp" />
           <h2 id="sobre-cta-titulo" class="mt-6 text-2xl lg:text-3xl">
@@ -122,11 +156,15 @@ const VALORES = [
             Envie sua lista de material para chaveiro e confira disponibilidade e valor.
           </p>
         </div>
-        <div class="flex shrink-0 flex-col gap-4 sm:flex-row">
+        <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:shrink-0">
           <a href={linkWhatsApp()} class="btn btn--primaria" data-whatsapp>
             <Icon name="whatsapp-logo" size={18} />
             Pedir no WhatsApp
           </a>
+          <button type="button" class="btn btn--secundaria" data-lista-abrir>
+            <Icon name="shopping-cart-simple" size={18} />
+            Minha lista
+          </button>
           <a href={`${prefix}catalogo.html`} class="btn btn--secundaria">
             Ver catálogo
             <Icon name="arrow-right" size={18} />

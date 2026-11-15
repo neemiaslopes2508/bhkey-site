@@ -48,9 +48,20 @@ const categorias = catalogo.categorias.map((c) => ({
                 type="search"
                 name="q"
                 autocomplete="off"
+                spellcheck="false"
                 placeholder="ex.: BK-CR-201 ou controle remoto"
                 class="campo"
               />
+              <button
+                type="button"
+                id="catalogo-limpar"
+                class="campo-limpar"
+                data-busca-limpar
+                aria-label="Limpar a busca"
+                hidden
+              >
+                <Icon name="x" size={16} />
+              </button>
             </div>
           </div>
 
@@ -92,7 +103,7 @@ const categorias = catalogo.categorias.map((c) => ({
       <!-- Grade: 2 colunas no celular, 3 no tablet, 4 no desktop, respiro 12. -->
       <div
         id="catalogo-grid"
-        class="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4"
+        class="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4"
       >
         {catalogo.itens.map((item) => (
           <ProdutoCard item={item} categorias={catalogo.categorias} />

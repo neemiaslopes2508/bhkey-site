@@ -1,35 +1,35 @@
-# Pendências — BH Key Distribuidora (v3)
+# Pendências — BH Key Distribuidora (v4)
 
 O que precisa vir do cliente **antes de publicar**. Nada disso foi inventado no
 site: aparece como "A definir" / "sobre consulta" / aviso de amostra.
 
-> **Nota v3 (camada visual):** a reformulação visual (grafite, raio
-> arredondado, Satoshi, header fixo, hero com foto única) mexeu **só em cor,
-> tipografia e forma**. Nenhum texto, dado, número, link ou aviso foi alterado:
-> missão/visão/valores continuam literais, o número do WhatsApp é o mesmo
-> placeholder, os 14 itens seguem marcados como amostra e "sob consulta" não
-> virou preço em lugar nenhum. As pendências abaixo continuam todas valendo.
+> **Nota v4 (lista de pedidos):** a v4 acrescentou a lista com quantidade,
+> gaveta/folha, barra no celular e mensagem única de WhatsApp. A lista fica no
+> navegador e **não reserva estoque**; ela é uma mensagem de orçamento. Nenhum
+> preço, endereço, horário ou dado comercial novo foi inventado. As pendências
+> abaixo continuam todas valendo.
 
 ## 1. Número do WhatsApp — 🔴 bloqueia publicação
 
 - **Onde:** `src/config/site.js` → `WHATSAPP_NUMERO`
 - **Valor atual:** `5531999999999` (placeholder, não é um número real)
 - **Formato:** `55` + DDD + número, sem espaços, sem `+`, sem traços
-- **Impacto:** todos os botões "Pedir no WhatsApp" do site (103 links) apontam
-  para esse valor. Enquanto estiver errado, **nenhum pedido chega ao cliente**.
+- **Impacto:** todos os 102 links do build (header, rodapé, cards, páginas de
+  produto e botão “Enviar pedido no WhatsApp” da lista) apontam para esse
+  valor. Enquanto estiver errado, **nenhum pedido chega ao cliente**.
 
 Depois de trocar: `npm run build`.
 
 ## 2. Endereço físico — 🟡
 
-- **Onde:** `src/pages/contato.astro` e rodapé (footer)
+- **Onde:** `src/pages/contato.astro`, `src/pages/sobre.astro` e rodapé
 - **Situação:** marcado como "A definir"
 - **Mapa:** hoje é uma busca do Google Maps pelo nome "BHKEY Distribuidora".
   Com o endereço real, trocar por link direto (`https://maps.google.com/?q=…`).
 
 ## 3. Horário de funcionamento — 🟡
 
-- **Onde:** `src/pages/contato.astro`, seção "Horário"
+- **Onde:** `src/pages/contato.astro`, `src/pages/sobre.astro` e rodapé
 - **Situação:** "A definir"
 
 ## 4. Pedido mínimo — 🟡
@@ -57,29 +57,26 @@ Depois de trocar: `npm run build`.
 
 ## 7. Fotos dos produtos — 🟡
 
-- **Hoje (v3):** fotos reais de catálogos públicos de distribuidoras, com fundo
+- **Hoje:** fotos reais de catálogos públicos de distribuidoras, com fundo
   branco e 1000×1000, prefixo `v2-` em `public/img/produtos/` (14) e
   `public/img/categorias/` (4), sempre exibidas em ladrilho branco dentro de
-  card grafite. `public/img/v2-hero.jpg` (capa 3:1 da v2) continua no projeto,
-  mas a home e o Sobre passaram a usar uma foto de produto cada. Origem de cada
-  uma em `v2-arte/ARTE.md`.
+  card grafite. Origem de cada uma em `v2-arte/ARTE.md`.
 - **Necessário:** fotos próprias da loja. Ao chegar, substituir os arquivos
   **com os mesmos nomes** e rodar `npm run build` — nada mais muda.
 - **Nota (foto errada):** `v2-controle-remoto-2-botoes-dobravel.jpg` mostra um
   remoto de **3 botões** para um item "2 botões com chave dobrável". É a foto
-  mais próxima que existe na pasta (a chave dobrável está correta); trocar quando
-  a loja mandar a foto do item real.
+  mais próxima que existe na pasta; trocar quando a loja mandar a foto real.
 - **Nota (normalização):** `v2-braco-chave-em-branco.jpg` tinha fundo de papel
   cinza; foi segmentado para branco preservando o recorte e a geometria.
 
-## 8. Bloco de destaque — 🟢 opcional
+## 8. Dados da lista de pedidos — 🟢 decisão do cliente
 
-- **Onde:** `src/pages/index.astro`, bloco "Condição especial" (no v3 é um
-  card grafite arredondado)
-- **Situação:** o texto não promete mais uma "oferta da semana" (não havia
-  confirmação de que a loja tenha esse programa). Hoje diz "condição especial,
-  preço sob consulta" e leva ao WhatsApp. Se quiserem destacar um item
-  específico, é só indicar qual — mantendo "sob consulta".
+- A lista não pede nome, e-mail ou telefone: o contato acontece na conversa do
+  WhatsApp. Se o cliente quiser identificar o pedido (nome da loja, cidade),
+  isso entra como campo opcional na gaveta — não foi inventado.
+- A lista fica no navegador de quem visita. Não há painel, banco de dados nem
+  pedido armazenado no servidor. Se o cliente quiser receber os pedidos em
+  outro canal além do WhatsApp, é um projeto à parte.
 
 ---
 
@@ -93,5 +90,5 @@ Depois de trocar: `npm run build`.
 | 3 | Horário | 🟡 "A definir" |
 | 4 | Pedido mínimo | 🟡 "A definir" |
 | 5 | Prazo e frete | 🟡 "A definir" |
-| 7 | Fotos reais | 🟡 placeholder do Instagram |
-| 8 | Bloco de destaque | 🟢 opcional |
+| 7 | Fotos reais | 🟡 foto placeholder do controle dobrável |
+| 8 | Dados opcionais do pedido | 🟢 decisão do cliente |

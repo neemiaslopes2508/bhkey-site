@@ -57,7 +57,7 @@ ok(h2.every((h) => h >= 40), 'links do contato com alvo >= 40px', h2.join('/'));
 await page.goto(`${base}/index.html`);
 const texto = await page.textContent('body');
 ok(!/oferta da semana/i.test(texto), 'home não promete mais "oferta da semana"');
-ok(/Condição especial/.test(texto), 'bloco de destaque usa "Condição especial"');
+ok(/Preço sob consulta/i.test(texto), 'home informa preço sob consulta');
 
 /* 5. Um único número de WhatsApp */
 const wa = await page.evaluate(() => [...document.querySelectorAll('a[href^="https://wa.me/"]')].map((a) => a.href.split('?')[0]));

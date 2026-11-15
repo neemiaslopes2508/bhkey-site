@@ -1,0 +1,115 @@
+---
+// ---------------------------------------------------------------------------
+// Lista de pedidos: gaveta (desktop) / folha inferior (celular), barra fixa
+// no celular e aviso flutuante. O estado e a renderização vivem em
+// src/js/main.js (módulo lista.js); aqui fica só a estrutura acessível.
+// ---------------------------------------------------------------------------
+import { prefixFor } from '../lib/paths.js';
+import Icon from './Icon.astro';
+
+const prefix = prefixFor(Astro.url.pathname);
+---
+<!-- Aviso de item adicionado/removido. Fica fora da gaveta para funcionar
+     com ela fechada. aria-live garante o anúncio sem roubar o foco. -->
+<div id="lista-toast" class="lista-toast" role="status" aria-live="polite" hidden>
+  <span id="lista-toast-texto" class="lista-toast-texto"></span>
+  <button type="button" class="lista-toast-acao" data-lista-abrir>Ver lista</button>
+</div>
+
+<!-- Barra fixa do celular: só aparece com pelo menos um item e some no desktop. -->
+<div id="lista-barra" class="lista-barra" hidden>
+  <button type="button" class="lista-barra-btn" data-lista-abrir aria-haspopup="dialog" aria-controls="lista-painel">
+    <span class="lista-barra-icone" aria-hidden="true">
+      <Icon name="shopping-cart-simple" size={22} />
+    </span>
+    <span class="lista-barra-texto">
+      <strong id="lista-barra-qtd">0 itens</strong>
+      <span>na sua lista</span>
+    </span>
+    <span class="lista-barra-cta">
+      Ver lista
+      <Icon name="arrow-right" size={16} />
+    </span>
+  </button>
+</div>
+
+<!-- Gaveta / folha. Fechada: invisível e inerte (não recebe foco nem leitor). -->
+<div id="lista-raiz" class="lista-raiz" aria-hidden="true" inert>
+  <div class="lista-overlay" data-lista-fechar></div>
+
+  <aside
+    id="lista-painel"
+    class="lista-painel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="lista-titulo"
+    tabindex="-1"
+  >
+    <header class="lista-cabecalho">
+      <div class="min-w-0">
+        <p class="label-caps text-green">Pedido pelo WhatsApp</p>
+        <h2 id="lista-titulo" class="mt-2 text-2xl">
+          Minha lista
+          <span id="lista-titulo-qtd" class="lista-titulo-qtd">0</span>
+        </h2>
+      </div>
+      <button type="button" class="btn-icone" data-lista-fechar aria-label="Fechar a lista">
+        <Icon name="x" size={20} />
+      </button>
+    </header>
+
+    <div class="lista-corpo">
+      <!-- Estado vazio -->
+      <div id="lista-vazia" class="lista-vazia">
+        <span class="lista-vazia-icone" aria-hidden="true">
+          <Icon name="shopping-cart-simple" size={30} />
+        </span>
+        <p class="mt-4 text-xl font-bold">Sua lista está vazia.</p>
+        <p class="mx-auto mt-2 max-w-[34ch] text-sm text-paper-dim">
+          Toque em “Adicionar à lista” nos itens do catálogo. As quantidades
+          ficam salvas neste navegador até você enviar o pedido.
+        </p>
+        <a href={`${prefix}catalogo.html`} class="btn btn--secundaria mt-6" data-lista-fechar>
+          Ver catálogo
+          <Icon name="arrow-right" size={16} />
+        </a>
+      </div>
+
+      <!-- Itens: preenchidos pelo JS -->
+      <ul id="lista-itens" class="lista-itens" aria-label="Itens da lista"></ul>
+
+      <p id="lista-nota-minimo" class="lista-nota-minimo" hidden>
+        Pedido mínimo e prazo são combinados no atendimento.
+      </p>
+    </div>
+
+    <footer id="lista-rodape" class="lista-rodape" hidden>
+      <div class="lista-total">
+        <span class="label-caps text-paper-dim">Total</span>
+        <strong><span id="lista-total-qtd">0</span> <span id="lista-total-unidade">itens</span></strong>
+      </div>
+
+      <a
+        id="lista-whatsapp"
+        class="btn btn--primaria btn--block"
+        href="#"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-whatsapp
+      >
+        <Icon name="whatsapp-logo" size={20} />
+        Enviar pedido no WhatsApp
+      </a>
+
+      <p class="lista-nota">
+        A mensagem vai com código, nome e quantidade de cada item. Valor e
+        disponibilidade são confirmados no atendimento.
+      </p>
+
+      <button type="button" id="lista-limpar" class="lista-limpar" data-limpar>
+        <Icon name="trash" size={16} />
+        <span data-limpar-texto>Limpar lista</span>
+      </button>
+    </footer>
+  </aside>
+</div>

@@ -2,6 +2,7 @@
 import { prefixFor } from '../lib/paths.js';
 import { INSTAGRAM_URL, linkWhatsApp, MAPA_URL, ENDERECO, HORARIO } from '../config/site.js';
 import Icon from '../components/Icon.astro';
+import ListaPedido from '../components/ListaPedido.astro';
 
 const { title, description } = Astro.props;
 const prefix = prefixFor(Astro.url.pathname);
@@ -33,10 +34,13 @@ const isCurrent = (href) =>
         @media (max-width: 1023px) {
           #menu-mobile { display: block !important; }
         }
+        /* Sem JS não há lista: some o que não funcionaria e fica o WhatsApp
+           direto, que é link de verdade. */
+        [data-add], .btn-lista, .lista-barra, #lista-raiz { display: none !important; }
       </style>
     </noscript>
   </head>
-  <body class="flex min-h-dvh flex-col bg-ink text-paper">
+  <body class="flex min-h-dvh flex-col bg-ink text-paper" data-prefix={prefix}>
     <a
       href="#conteudo"
       class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:flex focus:min-h-12 focus:items-center focus:bg-green focus:px-4 focus:text-ink"
@@ -78,6 +82,20 @@ const isCurrent = (href) =>
         </nav>
 
         <div class="flex items-center gap-2">
+          <!-- Minha lista: sempre visível, com contador. No celular fica só o
+               ícone (44px) para o cabeçalho não espremer o logo. -->
+          <button
+            type="button"
+            class="btn-lista"
+            data-lista-abrir
+            aria-haspopup="dialog"
+            aria-controls="lista-painel"
+            aria-label="Abrir minha lista"
+          >
+            <Icon name="shopping-cart-simple" size={20} />
+            <span class="btn-lista-texto">Minha lista</span>
+            <span class="btn-lista-contador" data-lista-contador hidden>0</span>
+          </button>
           <a
             href={linkWhatsApp()}
             class="btn btn--primaria btn--compacto btn--sm-up"
@@ -145,6 +163,13 @@ const isCurrent = (href) =>
               >{item.label}</a>
             </li>
           ))}
+          <li class="pt-2">
+            <button type="button" class="btn btn--secundaria btn--block" data-lista-abrir>
+              <Icon name="shopping-cart-simple" size={20} />
+              Minha lista
+              <span class="btn-lista-contador btn-lista-contador--menu" data-lista-contador hidden>0</span>
+            </button>
+          </li>
           <li class="pt-2">
             <a href={linkWhatsApp()} class="btn btn--primaria btn--block" data-whatsapp>
               <Icon name="whatsapp-logo" size={20} />
@@ -239,6 +264,8 @@ const isCurrent = (href) =>
         </div>
       </div>
     </footer>
+
+    <ListaPedido />
 
     <script src={`${prefix}app.js`} defer></script>
   </body>

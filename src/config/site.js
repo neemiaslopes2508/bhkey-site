@@ -42,3 +42,16 @@ export function linkWhatsApp(mensagem = WHATSAPP_MENSAGEM_PADRAO) {
 export function MENSAGEM_PRODUTO(codigo, nome) {
   return `Olá! Vim pelo site da BH Key Distribuidora e tenho interesse no item ${codigo} — ${nome}. Pode me passar disponibilidade e valor?`;
 }
+
+// Mensagem da lista de pedidos montada no site. Recebe [{codigo, nome, qtd}]
+// e devolve o texto pronto para o wa.me — um item por linha, com quantidade.
+export function MENSAGEM_LISTA(itens) {
+  const linhas = itens.map((i) => `• ${i.qtd}x ${i.codigo} — ${i.nome}`);
+  const total = itens.reduce((s, i) => s + i.qtd, 0);
+  const rodape = total === 1 ? '1 item' : `${total} itens`;
+  return (
+    'Olá! Vim pelo site da BH Key Distribuidora e montei esta lista:\n\n' +
+    linhas.join('\n') +
+    `\n\nTotal: ${rodape}.\nPode confirmar disponibilidade e valor?`
+  );
+}

@@ -16,7 +16,7 @@ const PASSOS = [
   {
     titulo: 'Monte a sua lista',
     texto:
-      'Use o botão “Pedir no WhatsApp” em cada item: a mensagem já sai com o código e o nome. Se preferir, copie os códigos e mande tudo de uma vez.',
+      'Toque em “Adicionar à lista” em cada item e ajuste as quantidades na gaveta da lista. Ela fica salva neste navegador até você enviar o pedido.',
   },
   {
     titulo: 'Confirme a disponibilidade',
@@ -56,6 +56,16 @@ const RESUMO = [
         O pedido é fechado pelo WhatsApp. Você escolhe os itens no site e a
         confirmação de disponibilidade, valor e envio acontece na conversa.
       </p>
+      <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+        <a href={`${prefix}catalogo.html`} class="btn btn--primaria">
+          Montar minha lista
+          <Icon name="arrow-right" size={18} />
+        </a>
+        <button type="button" class="btn btn--secundaria" data-lista-abrir>
+          <Icon name="shopping-cart-simple" size={18} />
+          Ver lista atual
+        </button>
+      </div>
 
       <!-- Passos: cards arredondados com respiro real (v2 era lista de fios). -->
       <ol class="mt-8 grid gap-3 sm:gap-4">
@@ -84,7 +94,8 @@ const RESUMO = [
 
       <p class="mt-6 max-w-[64ch] text-sm text-paper-dim">
         Prazo de entrega, custo de frete e pedido mínimo ainda não foram definidos
-        pela BH Key e serão combinados direto no atendimento pelo WhatsApp.
+        pela BH Key e serão combinados direto no atendimento pelo WhatsApp. A
+        lista não reserva estoque: a disponibilidade é confirmada na conversa.
       </p>
     </div>
   </section>

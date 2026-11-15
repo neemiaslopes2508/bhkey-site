@@ -1,8 +1,8 @@
 ---
 // Card de produto do catálogo. Os atributos data-* são lidos pelo filtro/busca
-// em src/js/main.js — não renomear sem atualizar o JS.
-// v3: card grafite arredondado (24) com a foto em ladrilho branco (16) dentro,
-// recuo de 12, respiro real de 12 entre os cards (nada de matriz gap-px).
+// e pela lista em src/js/main.js — não renomear sem atualizar o JS.
+// A foto branca fica em ladrilho arredondado dentro do card grafite; o botão
+// de adicionar é a ação principal e o WhatsApp direto continua como atalho.
 import { prefixFor } from '../lib/paths.js';
 import { linkWhatsApp, MENSAGEM_PRODUTO } from '../config/site.js';
 import Icon from './Icon.astro';
@@ -15,6 +15,7 @@ const mensagem = MENSAGEM_PRODUTO(item.codigo, item.nome);
 <article
   class="card card--xl eleva flex h-full flex-col p-3"
   data-produto
+  data-slug={item.slug}
   data-categoria={item.categoria}
   data-nome={item.nome}
   data-codigo={item.codigo}
@@ -36,7 +37,10 @@ const mensagem = MENSAGEM_PRODUTO(item.codigo, item.nome);
     />
   </a>
   <div class="mt-3 flex flex-1 flex-col gap-2">
-    <p class="label-caps text-green">{item.codigo}</p>
+    <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+      <p class="label-caps text-green">{item.codigo}</p>
+      {categoria && <p class="text-sm text-paper-dim">{categoria.nome}</p>}
+    </div>
     <h3 class="text-base sm:text-xl">
       <a
         href={`${prefix}produto/${item.slug}.html`}
@@ -45,14 +49,33 @@ const mensagem = MENSAGEM_PRODUTO(item.codigo, item.nome);
         {item.nome}
       </a>
     </h3>
-    {categoria && <p class="text-sm text-paper-dim">{categoria.nome}</p>}
-    <a
-      href={linkWhatsApp(mensagem)}
-      class="btn btn--md btn--compacto btn--block btn--quebra mt-2"
-      data-whatsapp
-    >
-      <Icon name="whatsapp-logo" size={18} />
-      Pedir no WhatsApp
-    </a>
+    <div class="mt-auto flex flex-col gap-1 pt-2">
+      <button
+        type="button"
+        class="btn-add"
+        data-add
+        data-slug={item.slug}
+        data-codigo={item.codigo}
+        data-nome={item.nome}
+        data-categoria={item.categoria}
+        data-img={item.img}
+        aria-label={`Adicionar ${item.nome} à lista`}
+      >
+        <span class="btn-add-icone" aria-hidden="true">
+          <Icon name="plus" size={18} class="btn-add-mais" />
+          <Icon name="check" size={18} class="btn-add-check" />
+        </span>
+        <span data-add-texto>Adicionar à lista</span>
+        <span class="btn-add-qtd" data-add-contador hidden>0</span>
+      </button>
+      <a
+        href={linkWhatsApp(mensagem)}
+        class="btn-whatsapp-link"
+        data-whatsapp
+      >
+        <Icon name="whatsapp-logo" size={16} />
+        Pedir só este
+      </a>
+    </div>
   </div>
 </article>
