@@ -47,70 +47,71 @@ const RESUMO = [
   description="Passo a passo para comprar material para chaveiro na BH Key: navegar no catálogo, enviar a lista pelo WhatsApp, confirmar disponibilidade, pagar via PIX e receber o envio."
 >
   <section class="border-b border-ink-line">
-    <div class="shell py-12 sm:py-16">
+    <div class="shell py-10 sm:py-12">
       <Regua esquerda="Como comprar" direita={`${PASSOS.length} passos`} />
       <h1 class="mt-6 max-w-[18ch] text-3xl sm:text-4xl lg:text-5xl">
         Do catálogo ao envio, em cinco passos.
       </h1>
-      <p class="mt-4 max-w-[62ch] text-base text-paper/75">
+      <p class="mt-4 max-w-[62ch] text-base text-paper-dim">
         O pedido é fechado pelo WhatsApp. Você escolhe os itens no site e a
         confirmação de disponibilidade, valor e envio acontece na conversa.
       </p>
 
-      <ol class="mt-10 border-t border-ink-line">
+      <!-- Passos: cards arredondados com respiro real (v2 era lista de fios). -->
+      <ol class="mt-8 grid gap-3 sm:gap-4">
         {PASSOS.map((p, i) => (
-          <li class="border-b border-ink-line py-6 sm:py-8">
-            <div class="flex gap-4 sm:gap-6">
-              <span
-                class="font-mono text-sm text-green sm:text-base"
-                aria-hidden="true"
-              >{String(i + 1).padStart(2, '0')}</span>
-              <div class="min-w-0 flex-1">
-                <h2 class="text-2xl lg:text-3xl">{p.titulo}</h2>
-                <p class="mt-4 max-w-[60ch] text-base text-paper/75">{p.texto}</p>
-              </div>
+          <li class="card flex gap-4 p-4 sm:p-6">
+            <span
+              class="flex h-12 w-12 shrink-0 items-center justify-center rounded-pill border border-ink-line bg-ink-raised font-mono text-sm text-green"
+              aria-hidden="true"
+            >{String(i + 1).padStart(2, '0')}</span>
+            <div class="min-w-0 flex-1">
+              <h2 class="text-xl sm:text-2xl">{p.titulo}</h2>
+              <p class="mt-4 max-w-[60ch] text-base text-paper-dim">{p.texto}</p>
             </div>
           </li>
         ))}
       </ol>
 
-      <div class="mt-12 grid gap-px border border-ink-line bg-ink-line sm:grid-cols-2 lg:grid-cols-4">
+      <div class="mt-12 grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
         {RESUMO.map((r) => (
-          <div class="bg-ink p-4 sm:p-6">
-            <p class="label-caps text-paper/60">{r.rotulo}</p>
-            <p class="mt-2 font-display text-xl font-semibold text-paper">{r.valor}</p>
+          <div class="card p-4 sm:p-6">
+            <p class="label-caps text-paper-dim">{r.rotulo}</p>
+            <p class="mt-2 text-xl font-bold text-paper">{r.valor}</p>
           </div>
         ))}
       </div>
 
-      <p class="mt-6 max-w-[64ch] text-sm text-paper/70">
+      <p class="mt-6 max-w-[64ch] text-sm text-paper-dim">
         Prazo de entrega, custo de frete e pedido mínimo ainda não foram definidos
         pela BH Key e serão combinados direto no atendimento pelo WhatsApp.
       </p>
     </div>
   </section>
 
-  <section class="border-b border-ink-line bg-ink-soft" aria-labelledby="cc-cta-titulo">
-    <div class="shell flex flex-col items-start gap-8 py-12 sm:flex-row sm:items-center sm:justify-between sm:py-16">
-      <div>
-        <Regua esquerda="Começar" direita="WhatsApp" />
-        <h2 id="cc-cta-titulo" class="mt-6 text-2xl lg:text-3xl">
-          Monte a lista e mande agora.
-        </h2>
-        <p class="mt-4 max-w-[52ch] text-paper/75">
-          Se você já sabe o que precisa, envie os códigos e receba a confirmação
-          de disponibilidade.
-        </p>
-      </div>
-      <div class="flex shrink-0 flex-col gap-4 sm:flex-row">
-        <a href={linkWhatsApp()} class="btn btn--primaria" data-whatsapp>
-          <Icon name="whatsapp-logo" size={18} />
-          Pedir no WhatsApp
-        </a>
-        <a href={`${prefix}catalogo.html`} class="btn btn--secundaria">
-          Ver catálogo
-          <Icon name="arrow-right" size={18} />
-        </a>
+  <section class="border-b border-ink-line" aria-labelledby="cc-cta-titulo">
+    <div class="shell py-10 sm:py-12">
+      <div class="card flex flex-col items-start gap-8 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-10">
+        <div>
+          <Regua esquerda="Começar" direita="WhatsApp" />
+          <h2 id="cc-cta-titulo" class="mt-6 text-2xl lg:text-3xl">
+            Monte a lista e mande agora.
+          </h2>
+          <p class="mt-4 max-w-[52ch] text-paper-dim">
+            Se você já sabe o que precisa, envie os códigos e receba a confirmação
+            de disponibilidade.
+          </p>
+        </div>
+        <div class="flex shrink-0 flex-col gap-4 sm:flex-row">
+          <a href={linkWhatsApp()} class="btn btn--primaria" data-whatsapp>
+            <Icon name="whatsapp-logo" size={18} />
+            Pedir no WhatsApp
+          </a>
+          <a href={`${prefix}catalogo.html`} class="btn btn--secundaria">
+            Ver catálogo
+            <Icon name="arrow-right" size={18} />
+          </a>
+        </div>
       </div>
     </div>
   </section>

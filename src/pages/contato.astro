@@ -62,12 +62,12 @@ const AVISO_ENDERECO =
   description="Fale com a BH Key Distribuidora pelo WhatsApp, Instagram ou Google Maps. Atendimento a chaveiros e revendas em todo o Brasil."
 >
   <section class="border-b border-ink-line">
-    <div class="shell py-12 sm:py-16">
+    <div class="shell py-10 sm:py-12">
       <Regua esquerda="Contato" direita="WhatsApp · Instagram · Mapa" />
       <h1 class="mt-6 max-w-[16ch] text-3xl sm:text-4xl lg:text-5xl">
         Fale com a BH Key.
       </h1>
-      <p class="mt-4 max-w-[62ch] text-base text-paper/75">
+      <p class="mt-4 max-w-[62ch] text-base text-paper-dim">
         O pedido é fechado pelo WhatsApp. Mande a lista com os códigos dos itens
         para confirmar disponibilidade e valor.
       </p>
@@ -88,23 +88,24 @@ const AVISO_ENDERECO =
         </a>
       </div>
 
-      <div class="mt-10 grid gap-px border border-ink-line bg-ink-line sm:grid-cols-2">
+      <!-- Canais: cards arredondados com respiro (v2 era matriz de fios). -->
+      <div class="mt-10 grid gap-3 sm:grid-cols-2 sm:gap-4">
         {canais.map((c) => (
-          <div class="flex flex-col bg-ink p-4 sm:p-6">
+          <div class="card flex flex-col p-4 sm:p-6">
             <div class="flex items-center gap-2">
               <span class="shrink-0 text-green" aria-hidden="true">
                 <Icon name={c.icon} size={22} />
               </span>
-              <p class="label-caps text-paper/60">{c.rotulo}</p>
+              <p class="label-caps text-paper-dim">{c.rotulo}</p>
             </div>
-            <p class="mt-4 font-display text-xl font-semibold sm:text-2xl">
+            <p class="mt-4 text-xl font-bold sm:text-2xl">
               {c.valor}
             </p>
-            <p class="mt-2 max-w-[40ch] text-sm text-paper/70">{c.nota}</p>
+            <p class="mt-2 max-w-[40ch] text-sm text-paper-dim">{c.nota}</p>
             {c.href && (
               <a
                 href={c.href}
-                class="mt-4 inline-flex min-h-11 items-center gap-2 self-start text-sm text-green underline underline-offset-4 transition-colors hover:text-paper"
+                class="mt-4 inline-flex min-h-12 items-center gap-2 self-start text-sm text-green underline underline-offset-4 transition-colors duration-200 hover:text-paper"
                 {...(c.externo ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               >
                 {c.cta}
@@ -119,11 +120,11 @@ const AVISO_ENDERECO =
         <AvisoAmostra aviso={AVISO_ENDERECO} />
       </div>
 
-      <p class="mt-8 text-sm text-paper/70">
+      <p class="mt-8 text-sm text-paper-dim">
         Prefere escolher antes de chamar?
         <a
           href={`${prefix}catalogo.html`}
-          class="ml-2 inline-flex min-h-11 items-center text-green underline underline-offset-4"
+          class="ml-2 inline-flex min-h-12 items-center text-green underline underline-offset-4"
         >
           Abrir o catálogo
         </a>

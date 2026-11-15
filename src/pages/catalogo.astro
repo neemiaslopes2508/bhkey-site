@@ -20,10 +20,10 @@ const categorias = catalogo.categorias.map((c) => ({
   description="Catálogo de material para chaveiro: chaves canivete, controles remotos, carcaças e chaves automotivas. Busque por nome ou código e peça pelo WhatsApp."
 >
   <section class="border-b border-ink-line">
-    <div class="shell py-12 sm:py-16">
+    <div class="shell py-10 sm:py-12">
       <Regua esquerda="Catálogo" direita={`${total} itens · ${categorias.length} categorias`} />
       <h1 class="mt-6 text-3xl sm:text-4xl lg:text-5xl">Catálogo</h1>
-      <p class="mt-4 max-w-[62ch] text-base text-paper/75">
+      <p class="mt-4 max-w-[62ch] text-base text-paper-dim">
         Busque por nome ou código, filtre por categoria e monte a lista. Preço sob
         consulta: envie os itens pelo WhatsApp para confirmar disponibilidade e valor.
       </p>
@@ -33,10 +33,10 @@ const categorias = catalogo.categorias.map((c) => ({
       </div>
 
       <!-- Controles: busca + filtro (ligados a src/js/main.js) -->
-      <div class="mt-8 border border-ink-line bg-ink-soft p-4 sm:p-6">
+      <div class="card mt-8 p-4 sm:p-6">
         <div class="flex flex-col gap-6">
           <div>
-            <label for="catalogo-busca" class="label-caps mb-2 block text-paper/60">
+            <label for="catalogo-busca" class="label-caps mb-2 block text-paper-dim">
               Buscar por nome ou código
             </label>
             <div class="relative">
@@ -55,7 +55,7 @@ const categorias = catalogo.categorias.map((c) => ({
           </div>
 
           <div>
-            <p class="label-caps mb-2 text-paper/60" id="filtro-rotulo">Filtrar por categoria</p>
+            <p class="label-caps mb-2 text-paper-dim" id="filtro-rotulo">Filtrar por categoria</p>
             <ul class="flex flex-wrap gap-2" role="group" aria-labelledby="filtro-rotulo">
               <li>
                 <button
@@ -84,39 +84,40 @@ const categorias = catalogo.categorias.map((c) => ({
         <h2 class="text-2xl lg:text-3xl">Itens do catálogo</h2>
         <p
           id="catalogo-contador"
-          class="label-caps text-paper/60"
+          class="label-caps text-paper-dim"
           aria-live="polite"
         >{total} itens</p>
       </div>
 
+      <!-- Grade: 2 colunas no celular, 3 no tablet, 4 no desktop, respiro 12. -->
       <div
         id="catalogo-grid"
-        class="mt-4 grid gap-px border border-ink-line bg-ink-line sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        class="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4"
       >
         {catalogo.itens.map((item) => (
           <ProdutoCard item={item} categorias={catalogo.categorias} />
         ))}
       </div>
 
-      <div id="catalogo-vazio" class="mt-6 hidden border border-ink-line bg-ink-soft px-6 py-12 text-center">
-        <p class="font-display text-xl font-semibold">Nenhum item encontrado.</p>
-        <p class="mx-auto mt-4 max-w-[46ch] text-sm text-paper/70">
+      <div id="catalogo-vazio" class="card mt-6 hidden px-6 py-12 text-center">
+        <p class="text-xl font-bold">Nenhum item encontrado.</p>
+        <p class="mx-auto mt-4 max-w-[46ch] text-sm text-paper-dim">
           Tente outro termo, cheque o código escrito ou volte para a categoria “Todos”.
         </p>
         <p class="mt-4 text-sm">
           <a
             href={`${prefix}catalogo.html`}
-            class="inline-flex min-h-11 items-center text-green underline underline-offset-4"
+            class="inline-flex min-h-12 items-center text-green underline underline-offset-4"
           >
             Limpar filtros e ver tudo
           </a>
         </p>
       </div>
 
-      <p class="mt-8 max-w-[62ch] text-sm text-paper/70">
+      <p class="mt-8 max-w-[62ch] text-sm text-paper-dim">
         Não achou o que precisa? Envie a lista pelo WhatsApp para confirmar
         disponibilidade e valor.
-        <a href={linkWhatsApp()} class="ml-2 inline-flex min-h-11 items-center text-green underline underline-offset-4" data-whatsapp>
+        <a href={linkWhatsApp()} class="ml-2 inline-flex min-h-12 items-center text-green underline underline-offset-4" data-whatsapp>
           Falar agora
         </a>
       </p>

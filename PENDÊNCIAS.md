@@ -1,7 +1,14 @@
-# Pendências — BH Key Distribuidora (v2)
+# Pendências — BH Key Distribuidora (v3)
 
 O que precisa vir do cliente **antes de publicar**. Nada disso foi inventado no
 site: aparece como "A definir" / "sobre consulta" / aviso de amostra.
+
+> **Nota v3 (camada visual):** a reformulação visual (grafite, raio
+> arredondado, Satoshi, header fixo, hero com foto única) mexeu **só em cor,
+> tipografia e forma**. Nenhum texto, dado, número, link ou aviso foi alterado:
+> missão/visão/valores continuam literais, o número do WhatsApp é o mesmo
+> placeholder, os 14 itens seguem marcados como amostra e "sob consulta" não
+> virou preço em lugar nenhum. As pendências abaixo continuam todas valendo.
 
 ## 1. Número do WhatsApp — 🔴 bloqueia publicação
 
@@ -50,10 +57,12 @@ Depois de trocar: `npm run build`.
 
 ## 7. Fotos dos produtos — 🟡
 
-- **Hoje (v2):** fotos reais de catálogos públicos de distribuidoras, com fundo
-  branco e 1000×1000, prefixo `v2-` em `public/img/produtos/` (14),
-  `public/img/categorias/` (4) e `public/img/v2-hero.jpg`. Os recortes do
-  Instagram da v1 foram apagados. Origem de cada uma em `v2-arte/ARTE.md`.
+- **Hoje (v3):** fotos reais de catálogos públicos de distribuidoras, com fundo
+  branco e 1000×1000, prefixo `v2-` em `public/img/produtos/` (14) e
+  `public/img/categorias/` (4), sempre exibidas em ladrilho branco dentro de
+  card grafite. `public/img/v2-hero.jpg` (capa 3:1 da v2) continua no projeto,
+  mas a home e o Sobre passaram a usar uma foto de produto cada. Origem de cada
+  uma em `v2-arte/ARTE.md`.
 - **Necessário:** fotos próprias da loja. Ao chegar, substituir os arquivos
   **com os mesmos nomes** e rodar `npm run build` — nada mais muda.
 - **Nota (foto errada):** `v2-controle-remoto-2-botoes-dobravel.jpg` mostra um
@@ -65,7 +74,8 @@ Depois de trocar: `npm run build`.
 
 ## 8. Bloco de destaque — 🟢 opcional
 
-- **Onde:** `src/pages/index.astro`, bloco "Condição especial"
+- **Onde:** `src/pages/index.astro`, bloco "Condição especial" (no v3 é um
+  card grafite arredondado)
 - **Situação:** o texto não promete mais uma "oferta da semana" (não havia
   confirmação de que a loja tenha esse programa). Hoje diz "condição especial,
   preço sob consulta" e leva ao WhatsApp. Se quiserem destacar um item

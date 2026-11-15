@@ -4,29 +4,64 @@
 @source "../";
 
 /* =========================================================================
-   BH KEY — design tokens
-   Amostra de cor extraída da arte do cliente (logo + posts):
-     verde de marca #85b339 · preto quase puro #0d1015 · papel off-white
-   Verde sobre papel usa variante escura (#4f7119) para contraste AA (4.9:1).
+   BH KEY — design tokens (v3 · reformulação visual)
+   Tema grafite escuro (não preto puro) + verde de marca, canto arredondado
+   em tudo, tipografia Satoshi. Regras de ouro do v3:
+     · nada de faixa off-white full-bleed — bloco em destaque é card grafite;
+     · nada de matriz de caixas com fio de 1px (gap-px) — separação é cor de
+       superfície + respiro real de card (12/16px) + raio;
+     · uma única sombra no site inteiro (cabeçalho / folha do menu).
 
-   ESCALA TIPOGRÁFICA FIXA (v2): 12 / 14 / 16 / 20 / 24 / 32 / 40 / 48
-     xs 12 · sm 14 · base 16 · xl 20 · 2xl 24   → já são do Tailwind
-     3xl/4xl/5xl são remapeados abaixo de 30/36/48 para 32/40/48, cada um
-     com a sua altura de linha. Nenhum texto do site usa outro tamanho.
-   PESOS: só dois por tela — 400 (Satoshi, corpo e controles) e
-     600 (Clash Display, títulos, botões e estado ativo).
+   COR (v3)
+     base            #0b0d10   fundo da página
+     superfície 1    #12161a   cards, painéis, rodapé
+     superfície 2    #171c21   blocos elevados (busca, hover, chip inativo)
+     fio             rgb(255 255 255 / .08) padrão; /.10 onde a linha precisa ler
+     texto 1         #f5f5ee   (17:1 na base)
+     texto 2         #a3abb4   (8.4:1 na base — AA)
+     verde           #85b339   (7.9:1 na base)
+     verde profundo  #4f7119   estado pressionado
+     anel de foco    2px #85b339 com offset 4px (global, ver @layer base)
+     Único gradiente permitido: o scrim escuro do card da foto da hero
+     (linear-gradient sobre preto, até 55% de alfa) — ver .foto-scrim.
+
+   RAIO — tokens --radius-sm / -md / -lg / -xl / -pill (8 / 12 / 16 / 24 / 9999)
+     chips, miniaturas pequenas, campos pequenos ......... sm  8
+     botão de card, campo, ladrilho interno .............. md 12
+     card, painel, folha do menu ......................... lg 16
+     card de produto, card da foto, painel grande ......... xl 24
+     CTAs, chips, badges, busca, botão redondo ........... pill 9999
+     Regra de encaixe: ladrilho branco = raio do card − recuo do card
+     (card 24 com recuo 12 → ladrilho 16), para os cantos ficarem concêntricos.
+
+   TIPO (v3) — Satoshi em tudo, Clash Display removida
+     títulos ....... 700, letter-spacing −0.02em, text-wrap: balance
+     ênfase ........ 500          corpo e controles ... 400
+     mono .......... Azeret Mono 400/500, só códigos e rótulos label-caps
+     pesos disponíveis: 400 / 500 / 700 (nunca 600)
+     escala fixa: 12 / 14 / 16 / 20 / 24 / 32 / 40 / 48
+
+   ESPAÇO (v3) — grade de 8, com uma meia-escala declarada
+     --space-1  8  → p-2 / gap-2      --space-4 32 → p-8  / gap-8
+     --space-2 16  → p-4 / gap-4      --space-5 40 → p-10 / gap-10
+     --space-3 24  → p-6 / gap-6      --space-6 48 → p-12 / gap-12
+     --space-1-5 12 → recuo interno de card (brief v3 §2: gaps de card 12/16)
+     Fora da escala só: 4px (ajuste ótico de ícone), 1px (fio), 0 (resets)
+     e --touch-min (48px, alvo de toque — é medida de controle, não de layout).
    ========================================================================= */
 @theme {
-  --color-ink: #0d1015;
-  --color-ink-soft: #171c22;
-  --color-ink-line: #2a3138;
+  /* ---- cor ---- */
+  --color-ink: #0b0d10;
+  --color-ink-soft: #12161a;
+  --color-ink-raised: #171c21;
+  --color-ink-line: rgb(255 255 255 / 0.08);
+  --color-ink-line-strong: rgb(255 255 255 / 0.1);
+  --color-paper: #f5f5ee;
+  --color-paper-dim: #a3abb4;
   --color-green: #85b339;
-  --color-green-ink: #4f7119;
-  --color-green-deep: #33490f;
-  --color-paper: #f2f0e9;
-  --color-paper-dim: #e6e3d9;
+  --color-green-deep: #4f7119;
 
-  --font-display: "Clash Display", ui-sans-serif, system-ui, sans-serif;
+  /* ---- tipografia ---- */
   --font-body: "Satoshi", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Azeret Mono", ui-monospace, "Courier New", monospace;
 
@@ -36,47 +71,33 @@
   --text-4xl--line-height: 3rem; /* 48 */
   --text-5xl: 3rem; /* 48 */
   --text-5xl--line-height: 3.5rem; /* 56 */
+
+  /* ---- raio ---- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 9999px;
+
+  /* ---- a única sombra do site ---- */
+  --shadow-sheet: 0 8px 32px rgba(0, 0, 0, 0.45);
 }
 
 /* --------------------------------------------------------------------------
-   ESCALA DE ESPAÇO EM PONTOS DE 8 — usada em todo CSS próprio e espelhada,
-   passo a passo, nas utilities pares do Tailwind usadas no markup:
-     --space-1  8px → p-2 / gap-2 / mt-2    --space-5 40px → p-10 / gap-10
-     --space-2 16px → p-4 / gap-4 / mt-4    --space-6 48px → p-12 / py-12
-     --space-3 24px → p-6 / gap-6 / mt-6    --space-7 56px → p-14
-     --space-4 32px → p-8 / gap-8 / mt-8    --space-8 64px → p-16 / gap-16
-   Fora da escala só existe o que é exceção declarada:
-     · --touch-min (44px) — alvo de toque mínimo, altura de controle, não
-       espaço de layout;
-     · 4px (mt-1/ml-1) — ajuste ótico de ícone, nunca espaço de layout;
-     · 1px — fio de borda;
-     · 0 — resets (min-w-0, pt-0, inset-y-0).
+   ESCALA DE ESPAÇO EM PONTOS DE 8 (documentada no cabeçalho acima).
    -------------------------------------------------------------------------- */
 :root {
   --space-1: 8px;
+  --space-1-5: 12px; /* meia-escala: 8+4, só o recuo interno de card */
   --space-2: 16px;
   --space-3: 24px;
   --space-4: 32px;
   --space-5: 40px;
   --space-6: 48px;
-  --space-7: 56px;
-  --space-8: 64px;
-  --touch-min: 44px;
+  --touch-min: 48px;
 }
 
 /* ---------- fontes locais (sem CDN em tempo de execução) ---------- */
-@font-face {
-  font-family: "Clash Display";
-  src: url("./fonts/ClashDisplay-600.woff2") format("woff2");
-  font-weight: 600;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Clash Display";
-  src: url("./fonts/ClashDisplay-700.woff2") format("woff2");
-  font-weight: 700;
-  font-display: swap;
-}
 @font-face {
   font-family: "Satoshi";
   src: url("./fonts/Satoshi-400.woff2") format("woff2");
@@ -120,9 +141,11 @@
     min-height: 100dvh;
     line-height: 1.5;
   }
+  /* Títulos: Satoshi 700, −0.02em, balance (v3 §3). */
   h1, h2, h3 {
-    font-family: var(--font-display);
-    font-weight: 600;
+    font-family: var(--font-body);
+    font-weight: 700;
+    letter-spacing: -0.02em;
     text-wrap: balance;
     line-height: 1.2;
   }
@@ -142,6 +165,12 @@
   button:disabled {
     cursor: not-allowed;
     opacity: 0.35;
+  }
+  /* A única sombra do site é a do cabeçalho/folha: controles nunca têm. */
+  input,
+  select,
+  textarea {
+    box-shadow: none;
   }
   :focus-visible {
     outline: 2px solid var(--color-green);
@@ -163,7 +192,7 @@
   width: 100%;
   max-width: 72rem;
   margin-inline: auto;
-  padding-inline: var(--space-2); /* 16 */
+  padding-inline: var(--space-2); /* 16 — mobile 360-430 */
 }
 @media (min-width: 640px) {
   .shell {
@@ -176,10 +205,40 @@
   }
 }
 
+/* ---------- card — superfície 1 com fio e raio ----------
+   Substitui as caixas de fio de 1px do v2: separação por cor de superfície
+   e respiro real, nunca por matriz gap-px. */
+.card {
+  background: var(--color-ink-soft);
+  border: 1px solid var(--color-ink-line);
+  border-radius: var(--radius-lg); /* 16 */
+}
+.card--xl {
+  border-radius: var(--radius-xl); /* 24 — produto, hero, painéis grandes */
+}
+
+/* ---------- elevação no hover — teto de 2px, 180ms ----------
+   Só sob quem pediu menos movimento (bloco no fim do arquivo).
+   O border-color também vive aqui porque .card é CSS fora de camada e
+   venceria um utilitário hover:border-* no mesmo elemento. */
+.eleva {
+  transition:
+    transform 0.18s cubic-bezier(0.2, 0.8, 0.3, 1),
+    border-color 0.18s ease;
+}
+.eleva:hover {
+  border-color: rgb(255 255 255 / 0.16);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .eleva:hover {
+    transform: translateY(-2px);
+  }
+}
+
 /* ---------- botões — um padrão para todas as variantes ----------
-   altura 48 (--space-6), respiro 8/24, fio de 1px, display 600.
+   Altura 48 (--space-6), respiro 8/24, fio de 1px, Satoshi 700, raio pill.
    Estados: hover (papel), active (verde profundo), disabled (opacity global),
-   focus-visible (contorno global de 2px/4px). */
+   focus-visible (contorno global de 2px/4px). Transição 180ms ease. */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -187,12 +246,13 @@
   gap: var(--space-1);
   min-height: var(--space-6);
   padding: var(--space-1) var(--space-3);
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: 1rem; /* 16 */
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.5;
   text-align: center;
   border: 1px solid transparent;
+  border-radius: var(--radius-pill);
   transition:
     background-color 0.18s ease,
     color 0.18s ease,
@@ -202,29 +262,36 @@
   display: flex;
   width: 100%;
 }
-/* Variante compacta: alvo de toque (44px) e rótulo de 14px. Mesmos estados
-   das demais — só a altura e o corpo mudam. */
+/* Catálogo em 2 colunas (360–430): o rótulo "Pedir no WhatsApp" quebra em
+   duas linhas. Em flex o ícone ficaria centralizado entre as linhas; em fluxo
+   de texto ele acompanha a primeira linha. */
+.btn--block.btn--quebra {
+  display: block;
+  text-align: center;
+}
+.btn--quebra svg {
+  display: inline-block; /* vence o preflight (svg display:block) e flui com o texto */
+  vertical-align: middle;
+  margin-right: var(--space-1);
+}
+/* Raio 12 para botão dentro de card: em2 colunas o rótulo pode quebrar em
+   duas linhas e o pill ficaria estranho (brief v3 §2: botão pill ou 12). */
+.btn--md {
+  border-radius: var(--radius-md);
+}
+/* Variante compacta: alvo de toque (48px) e rótulo de 14px. */
 .btn--compacto {
   min-height: var(--touch-min);
   padding: var(--space-1) var(--space-2);
   font-size: 0.875rem; /* 14 */
 }
-/* Exibição responsiva de botão (era hidden/sm:inline-flex e lg:hidden no
-   markup; aqui a display fica dentro do próprio componente). */
+/* Exibição responsiva de botão. */
 .btn--sm-up {
   display: none;
 }
 @media (min-width: 640px) {
   .btn--sm-up {
     display: inline-flex;
-  }
-}
-.btn--lg-down {
-  display: inline-flex;
-}
-@media (min-width: 1024px) {
-  .btn--lg-down {
-    display: none;
   }
 }
 .btn--primaria {
@@ -244,7 +311,7 @@
 }
 .btn--secundaria {
   background: transparent;
-  border-color: var(--color-ink-line);
+  border-color: var(--color-ink-line-strong);
   color: var(--color-paper);
 }
 .btn--secundaria:hover {
@@ -252,14 +319,68 @@
   color: var(--color-green);
 }
 .btn--secundaria:active {
-  background: var(--color-ink-soft);
+  background: var(--color-ink-raised);
   border-color: var(--color-green);
   color: var(--color-green);
 }
 
+/* ---------- botão de ícone redondo (48px) ----------
+   Setas do carrossel: alvo de toque, raio pill. O menu do celular fica em
+   44×44 por especificação direta da direção (§5 do briefing). */
+.btn-icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch-min);
+  height: var(--touch-min);
+  flex-shrink: 0;
+  background: var(--color-ink-raised);
+  color: var(--color-paper);
+  border: 1px solid var(--color-ink-line);
+  border-radius: var(--radius-pill);
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+.btn-icone:hover {
+  border-color: var(--color-green);
+  color: var(--color-green);
+}
+.btn-icone:active {
+  background: var(--color-ink-soft);
+}
+/* Variante do menu do celular: some no desktop, onde a navegação fixa assume.
+   Vive em CSS (e não em lg:hidden) porque .btn-icone é classe fora de camada
+   e venceria o utilitário. Fica em 44px (e não em --touch-min) porque a
+   direção especifica o botão de menu como 44×44. */
+.btn-icone--menu {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+}
+@media (min-width: 1024px) {
+  .btn-icone--menu {
+    display: none;
+  }
+}
+
+/* Ícone/rotulo do botão de menu: mostra "abrir" ou "fechar" conforme
+   aria-expanded — troca só de CSS, sem depender de JS. Só um dos dois fica
+   no DOM visível (e no nome acessível) por vez. */
+#menu-toggle .menu-alternado {
+  display: none;
+}
+#menu-toggle[aria-expanded='true'] .menu-repouso {
+  display: none;
+}
+#menu-toggle[aria-expanded='true'] .menu-alternado {
+  display: inline-flex;
+}
+
 /* ---------- chip de filtro do catálogo ----------
-   O estado é declarado só por aria-pressed (o JS não toca em cor), assim
-   largura e peso nunca mudam ao clicar. Altura = alvo de toque (44px). */
+   Estado declarado só por aria-pressed (o JS não toca em cor), assim largura
+   e peso nunca mudam ao clicar. Altura = alvo de toque (48px), raio pill. */
 .btn-chip {
   display: inline-flex;
   align-items: center;
@@ -268,9 +389,10 @@
   padding: var(--space-1) var(--space-2);
   font-size: 0.875rem; /* 14 */
   line-height: 1.5;
-  background: transparent;
-  color: var(--color-paper);
+  background: var(--color-ink-raised);
+  color: var(--color-paper-dim);
   border: 1px solid var(--color-ink-line);
+  border-radius: var(--radius-pill);
   transition:
     background-color 0.18s ease,
     color 0.18s ease,
@@ -293,23 +415,25 @@
   color: var(--color-ink);
 }
 
-/* ---------- campo de busca — mesma régua do botão ----------
-   altura 48, respiro 8/16, calha de 40px para o ícone. */
+/* ---------- campo de busca — pill, 48px ----------
+   Fundo superfície 2 dentro do painel de controle, fio hairline, calha de
+   40px para o ícone (ícone centrado a 20px da borda, encaixe óptico do pill). */
 .campo {
   width: 100%;
-  min-height: var(--space-6);
+  min-height: var(--space-6); /* 48 */
   padding: var(--space-1) var(--space-2);
   padding-left: var(--space-5); /* 40 — calha do ícone */
   font-family: var(--font-body);
   font-size: 1rem; /* 16 */
   line-height: 1.5;
   color: var(--color-paper);
-  background: var(--color-ink);
+  background: var(--color-ink-raised);
   border: 1px solid var(--color-ink-line);
+  border-radius: var(--radius-pill);
   transition: border-color 0.18s ease;
 }
 .campo::placeholder {
-  color: rgb(242 240 233 / 0.55);
+  color: rgb(163 171 180 / 0.8);
 }
 .campo:focus {
   border-color: var(--color-green);
@@ -322,29 +446,46 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgb(242 240 233 / 0.6);
+  color: var(--color-paper-dim);
   pointer-events: none;
 }
 
-/* ---------- moldura de foto — uma só para todas as imagens ----------
-   Fundo branco (as fotos são branco puro), fio de 1px, legenda em 12px
-   sobre branco: contraste AA garantido em qualquer página. */
-.foto {
+/* ---------- foto — ladrilho branco dentro de card grafite ----------
+   As fotos são branco puro 1000×1000: sem o ladrilho elas abririam um buraco
+   branco no layout escuro. O card é a moldura; a legenda fica no grafite
+   (texto 2), nunca sobre o branco. */
+.foto-tile {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg); /* 16 = raio 24 do card − recuo 12 */
   background: #fff;
-  border: 1px solid var(--color-ink-line);
 }
 .foto figcaption {
   display: flex;
   align-items: center;
   gap: var(--space-1);
-  padding: var(--space-1) var(--space-2); /* 8 / 16 */
-  border-top: 1px solid var(--color-ink-line);
-  color: rgb(13 16 21 / 0.65);
+  margin-top: var(--space-1-5); /* 12 */
+  padding-inline: 4px; /* ajuste ótico */
+  color: var(--color-paper-dim);
   font-family: var(--font-mono);
   font-size: 0.75rem; /* 12 */
   letter-spacing: 0.14em;
   line-height: 1.5;
   text-transform: uppercase;
+}
+/* Foto em pé (hero, produto, sobre): card 24 com recuo 12. */
+.foto--card {
+  padding: var(--space-1-5); /* 12 */
+  background: var(--color-ink-soft);
+  border: 1px solid var(--color-ink-line);
+  border-radius: var(--radius-xl); /* 24 */
+}
+/* Único gradiente do site: scrim escuro sobre a foto da hero. */
+.foto-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.55), rgb(0 0 0 / 0) 55%);
+  pointer-events: none;
 }
 
 /* Faixa do carrossel: rolagem nativa escondida — funciona mesmo se o

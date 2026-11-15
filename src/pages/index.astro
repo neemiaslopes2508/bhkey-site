@@ -10,6 +10,12 @@ import { linkWhatsApp, INSTAGRAM_URL, MAPA_URL } from '../config/site.js';
 const prefix = prefixFor(Astro.url.pathname);
 const total = catalogo.itens.length;
 
+// Hero: uma foto de produto real (a mesma do item BK-CV-101), com nome e
+// legenda tirados do catálogo — nada de copy nova. A faixa de 3 fotos do v2
+// (img/v2-hero.jpg) saiu da composição.
+const hero = catalogo.itens.find((i) => i.slug === 'chave-canivete-2-botoes');
+const oferta = catalogo.itens.find((i) => i.slug === 'controle-remoto-4-botoes');
+
 const categorias = catalogo.categorias.map((c) => ({
   ...c,
   total: catalogo.itens.filter((i) => i.categoria === c.slug).length,
@@ -46,15 +52,15 @@ const destaques = catalogo.itens.slice(0, 6);
   title="BH Key Distribuidora — chaves, remotos e carcaças para chaveiro"
   description="Distribuidora de material para chaveiro: chaves canivete, controles remotos, carcaças e chaves automotivas. Catálogo com código e foto, pedidos pelo WhatsApp. Preço sob consulta."
 >
-  <!-- ── Hero ───────────────────────────────────────────────────────── -->
+  <!-- ── Hero: composição única com uma foto de produto ───────────────── -->
   <section class="border-b border-ink-line">
-    <div class="shell grid items-center gap-8 py-12 sm:py-16 lg:grid-cols-12 lg:gap-12">
-      <div class="lg:col-span-7">
+    <div class="shell grid items-center gap-8 py-10 sm:py-12 lg:grid-cols-12 lg:gap-12">
+      <div class="lg:col-span-6">
         <Regua esquerda="Material para chaveiro" direita="B2B" />
         <h1 class="mt-6 text-3xl sm:text-4xl lg:text-5xl">
           Chaves, remotos e carcaças para chaveiros e revendas.
         </h1>
-        <p class="mt-4 max-w-[58ch] text-base text-paper/75">
+        <p class="mt-4 max-w-[58ch] text-base text-paper-dim">
           Catálogo técnico com código e foto de cada item. Monte a sua lista e envie
           pelo WhatsApp: disponibilidade e valor são confirmados no atendimento.
           Preços sob consulta.
@@ -71,17 +77,21 @@ const destaques = catalogo.itens.slice(0, 6);
         </div>
       </div>
 
-      <div class="lg:col-span-5">
-        <figure class="foto">
-          <img
-            src={`${prefix}img/v2-hero.jpg`}
-            alt="Chave canivete, controle remoto e carcaça da BH Key lado a lado, sobre fundo branco."
-            width="2100"
-            height="700"
-            fetchpriority="high"
-            class="aspect-[3/1] w-full object-cover"
-          />
-          <figcaption>Linha BH Key · foto de amostra</figcaption>
+      <!-- Card de foto: grafite, raio 24, ladrilho branco e scrim escuro. -->
+      <div class="lg:col-span-6">
+        <figure class="foto foto--card">
+          <span class="foto-tile block">
+            <img
+              src={`${prefix}${hero.img}`}
+              alt={`${hero.nome}, sobre fundo branco.`}
+              width="1000"
+              height="1000"
+              fetchpriority="high"
+              class="aspect-square w-full object-cover"
+            />
+            <span class="foto-scrim" aria-hidden="true"></span>
+          </span>
+          <figcaption>{hero.nome} · foto de amostra</figcaption>
         </figure>
       </div>
     </div>
@@ -89,27 +99,27 @@ const destaques = catalogo.itens.slice(0, 6);
 
   <!-- ── Atalhos ────────────────────────────────────────────────────── -->
   <section class="border-b border-ink-line" aria-labelledby="atalhos-titulo">
-    <div class="shell py-12 sm:py-16">
+    <div class="shell py-10 sm:py-12">
       <Regua esquerda="Atalhos" direita="Três canais" />
       <h2 id="atalhos-titulo" class="sr-only">Atalhos de contato</h2>
-      <ul class="mt-6 border border-ink-line">
-        {atalhos.map((a, i) => (
-          <li class:list={[i > 0 && 'border-t border-ink-line']}>
+      <ul class="mt-6 grid gap-3 sm:grid-cols-3 sm:gap-4">
+        {atalhos.map((a) => (
+          <li>
             <a
               href={a.href}
-              class="flex items-center gap-4 bg-ink px-4 py-4 transition-colors hover:bg-ink-soft sm:px-6"
+              class="card eleva flex h-full flex-col p-4 sm:p-6"
               {...(a.externo ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             >
-              <span class="shrink-0 text-green" aria-hidden="true">
-                <Icon name={a.icon} size={26} />
+              <span class="flex items-start justify-between gap-4">
+                <span class="shrink-0 text-green" aria-hidden="true">
+                  <Icon name={a.icon} size={26} />
+                </span>
+                <span class="shrink-0 text-paper-dim" aria-hidden="true">
+                  <Icon name="arrow-right" size={20} />
+                </span>
               </span>
-              <span class="min-w-0 flex-1">
-                <span class="block font-display text-base font-semibold sm:text-xl">{a.titulo}</span>
-                <span class="mt-2 block text-sm text-paper/70 sm:text-base">{a.desc}</span>
-              </span>
-              <span class="shrink-0 text-paper/50" aria-hidden="true">
-                <Icon name="arrow-right" size={20} />
-              </span>
+              <span class="mt-4 block text-base font-bold sm:text-xl">{a.titulo}</span>
+              <span class="mt-2 block text-sm text-paper-dim sm:text-base">{a.desc}</span>
             </a>
           </li>
         ))}
@@ -119,19 +129,19 @@ const destaques = catalogo.itens.slice(0, 6);
 
   <!-- ── Categorias ─────────────────────────────────────────────────── -->
   <section class="border-b border-ink-line" aria-labelledby="categorias-titulo">
-    <div class="shell py-12 sm:py-16">
+    <div class="shell py-10 sm:py-12">
       <Regua esquerda="Categorias" direita={`${categorias.length} linhas`} />
       <h2 id="categorias-titulo" class="mt-6 text-2xl lg:text-3xl">
         Quatro linhas para o seu balcão.
       </h2>
-      <p class="mt-4 max-w-[56ch] text-paper/75">
+      <p class="mt-4 max-w-[56ch] text-paper-dim">
         Cada linha abre no catálogo já filtrada, com código e foto de cada item.
       </p>
 
-      <div class="mt-8 grid gap-px border border-ink-line bg-ink-line sm:grid-cols-2 lg:grid-cols-4">
+      <div class="mt-8 grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
         {categorias.map((c) => (
-          <a href={`${prefix}catalogo.html?cat=${c.slug}`} class="group flex flex-col bg-ink">
-            <span class="block overflow-hidden bg-ink-soft">
+          <a href={`${prefix}catalogo.html?cat=${c.slug}`} class="card eleva group flex flex-col p-3">
+            <span class="foto-tile block">
               <img
                 src={`${prefix}${c.img}`}
                 alt=""
@@ -139,15 +149,15 @@ const destaques = catalogo.itens.slice(0, 6);
                 height="900"
                 loading="lazy"
                 decoding="async"
-                class="aspect-[4/3] w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
+                class="aspect-[4/3] w-full object-cover"
               />
             </span>
-            <span class="flex flex-1 flex-col gap-2 p-4">
+            <span class="mt-3 flex flex-1 flex-col gap-2">
               <span class="label-caps text-green">{c.total} itens</span>
-              <span class="font-display text-base font-semibold transition-colors group-hover:text-green sm:text-xl">
+              <span class="block text-base font-bold transition-colors duration-200 group-hover:text-green sm:text-xl">
                 {c.nome}
               </span>
-              <span class="mt-2 inline-flex items-center gap-2 text-sm text-paper/70">
+              <span class="mt-auto inline-flex items-center gap-2 pt-2 text-sm text-paper-dim">
                 Ver categoria
                 <Icon name="arrow-right" size={16} />
               </span>
@@ -158,68 +168,74 @@ const destaques = catalogo.itens.slice(0, 6);
     </div>
   </section>
 
-  <!-- ── Condição especial (seção em papel) ─────────────────────────── -->
-  <section class="border-b border-ink-line bg-paper text-ink" aria-labelledby="oferta-titulo">
-    <div class="shell grid items-center gap-8 py-12 sm:py-16 lg:grid-cols-12 lg:gap-12">
-      <div class="lg:col-span-7">
-        <Regua claro esquerda="Condição especial" direita="Preço sob consulta" />
-        <h2 id="oferta-titulo" class="mt-6 text-2xl lg:text-3xl">
-          A condição especial é combinada no atendimento.
-        </h2>
-        <p class="mt-4 max-w-[58ch] text-base text-ink/75">
-          As condições em vigor são passadas pelo WhatsApp, com preço sob consulta e
-          sujeitas à disponibilidade de estoque. Nada de preço publicado na página:
-          o valor é confirmado no atendimento.
-        </p>
-        <a
-          href={linkWhatsApp('Olá! Vim pelo site da BH Key Distribuidora e quero saber das condições em destaque.')}
-          class="btn btn--primaria mt-8"
-          data-whatsapp
-        >
-          <Icon name="whatsapp-logo" size={18} />
-          Pedir a condição
-        </a>
-      </div>
-      <div class="lg:col-span-5">
-        <figure class="foto">
-          <img
-            src={`${prefix}img/produtos/v2-controle-remoto-4-botoes.jpg`}
-            alt="Controle remoto de quatro botões com chaveiro, sobre fundo branco."
-            width="1000"
-            height="1000"
-            loading="lazy"
-            decoding="async"
-            class="aspect-square w-full object-cover"
-          />
-          <figcaption>Controle remoto 4 botões · foto de amostra</figcaption>
-        </figure>
+  <!-- ── Condição especial (era faixa off-white; agora é card grafite) ─ -->
+  <section class="border-b border-ink-line" aria-labelledby="oferta-titulo">
+    <div class="shell py-10 sm:py-12">
+      <div class="card card--xl grid items-center gap-8 p-6 sm:p-10 lg:grid-cols-12 lg:gap-12">
+        <div class="lg:col-span-7">
+          <Regua esquerda="Condição especial" direita="Preço sob consulta" />
+          <h2 id="oferta-titulo" class="mt-6 text-2xl lg:text-3xl">
+            A condição especial é combinada no atendimento.
+          </h2>
+          <p class="mt-4 max-w-[58ch] text-base text-paper-dim">
+            As condições em vigor são passadas pelo WhatsApp, com preço sob consulta e
+            sujeitas à disponibilidade de estoque. Nada de preço publicado na página:
+            o valor é confirmado no atendimento.
+          </p>
+          <a
+            href={linkWhatsApp('Olá! Vim pelo site da BH Key Distribuidora e quero saber das condições em destaque.')}
+            class="btn btn--primaria mt-8"
+            data-whatsapp
+          >
+            <Icon name="whatsapp-logo" size={18} />
+            Pedir a condição
+          </a>
+        </div>
+        <div class="lg:col-span-5">
+          <figure class="foto">
+            <span class="foto-tile block">
+              <img
+                src={`${prefix}${oferta.img}`}
+                alt={`${oferta.nome}, sobre fundo branco.`}
+                width="1000"
+                height="1000"
+                loading="lazy"
+                decoding="async"
+                class="aspect-square w-full object-cover"
+              />
+            </span>
+            <figcaption>{oferta.nome} · foto de amostra</figcaption>
+          </figure>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- ── CTA catálogo ───────────────────────────────────────────────── -->
-  <section class="border-b border-ink-line bg-ink-soft" aria-labelledby="cta-titulo">
-    <div class="shell flex flex-col items-start gap-8 py-12 sm:flex-row sm:items-center sm:justify-between sm:py-16">
-      <div>
-        <Regua esquerda="Catálogo completo" direita={`${total} itens`} />
-        <h2 id="cta-titulo" class="mt-6 text-2xl lg:text-3xl">
-          Todo o catálogo em um lugar só.
-        </h2>
-        <p class="mt-4 max-w-[54ch] text-paper/75">
-          Filtre por categoria, busque pelo código e monte a lista para enviar direto
-          ao WhatsApp.
-        </p>
+  <section class="border-b border-ink-line" aria-labelledby="cta-titulo">
+    <div class="shell py-10 sm:py-12">
+      <div class="card flex flex-col items-start gap-8 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-10">
+        <div>
+          <Regua esquerda="Catálogo completo" direita={`${total} itens`} />
+          <h2 id="cta-titulo" class="mt-6 text-2xl lg:text-3xl">
+            Todo o catálogo em um lugar só.
+          </h2>
+          <p class="mt-4 max-w-[54ch] text-paper-dim">
+            Filtre por categoria, busque pelo código e monte a lista para enviar direto
+            ao WhatsApp.
+          </p>
+        </div>
+        <a href={`${prefix}catalogo.html`} class="btn btn--primaria shrink-0">
+          Ver catálogo
+          <Icon name="arrow-right" size={18} />
+        </a>
       </div>
-      <a href={`${prefix}catalogo.html`} class="btn btn--primaria shrink-0">
-        Ver catálogo
-        <Icon name="arrow-right" size={18} />
-      </a>
     </div>
   </section>
 
   <!-- ── Destaques (Embla carousel) ─────────────────────────────────── -->
   <section class="border-b border-ink-line" aria-labelledby="destaques-titulo">
-    <div class="shell py-12 sm:py-16">
+    <div class="shell py-10 sm:py-12">
       <div class="flex flex-wrap items-end justify-between gap-6">
         <div class="min-w-0 flex-1">
           <Regua esquerda="Destaques" direita={`${destaques.length} itens`} />
@@ -227,12 +243,13 @@ const destaques = catalogo.itens.slice(0, 6);
             Prontos para o balcão.
           </h2>
         </div>
+        <!-- Setas: botões redondos de 44px (alvo de toque). -->
         <div class="flex gap-2" data-embla-controls>
           <button
             type="button"
             data-embla-prev
             aria-label="Ver itens anteriores"
-            class="flex h-11 w-11 items-center justify-center border border-ink-line text-paper transition-colors hover:border-green hover:text-green"
+            class="btn-icone"
           >
             <Icon name="arrow-left" size={20} />
           </button>
@@ -240,7 +257,7 @@ const destaques = catalogo.itens.slice(0, 6);
             type="button"
             data-embla-next
             aria-label="Ver próximos itens"
-            class="flex h-11 w-11 items-center justify-center border border-ink-line text-paper transition-colors hover:border-green hover:text-green"
+            class="btn-icone"
           >
             <Icon name="arrow-right" size={20} />
           </button>
@@ -252,16 +269,16 @@ const destaques = catalogo.itens.slice(0, 6);
           <div class="flex" data-embla-container>
             {destaques.map((item) => (
               <div
-                class="flex min-w-0 flex-[0_0_82%] pr-4 sm:flex-[0_0_47%] lg:flex-[0_0_31.5%]"
+                class="flex min-w-0 flex-[0_0_82%] pr-3 sm:flex-[0_0_47%] lg:flex-[0_0_31.5%]"
                 data-embla-slide
               >
-                <ProdutoCard item={item} categorias={catalogo.categorias} borda />
+                <ProdutoCard item={item} categorias={catalogo.categorias} />
               </div>
             ))}
           </div>
         </div>
       </div>
-      <p class="label-caps mt-4 text-paper/60">
+      <p class="label-caps mt-4 text-paper-dim">
         Arraste para o lado ou use as setas
       </p>
     </div>

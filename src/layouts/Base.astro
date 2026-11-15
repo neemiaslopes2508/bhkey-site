@@ -24,7 +24,7 @@ const isCurrent = (href) =>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#0d1015" />
+    <meta name="theme-color" content="#0b0d10" />
     <link rel="icon" type="image/png" href={`${prefix}favicon.png`} />
     <link rel="stylesheet" href={`${prefix}styles.css`} />
     <!-- Sem JS o menu mobile fica aberto e o carrossel rola na mão: nada some. -->
@@ -39,18 +39,21 @@ const isCurrent = (href) =>
   <body class="flex min-h-dvh flex-col bg-ink text-paper">
     <a
       href="#conteudo"
-      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:flex focus:min-h-11 focus:items-center focus:bg-green focus:px-4 focus:text-ink"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:flex focus:min-h-12 focus:items-center focus:bg-green focus:px-4 focus:text-ink"
     >Pular para o conteúdo</a>
 
-    <header class="sticky top-0 z-40 border-b border-ink-line bg-ink">
+    <!-- Cabeçalho fixo, grafite translúcido com blur; única sombra do site. -->
+    <header
+      class="sticky top-0 z-40 border-b border-ink-line bg-ink/90 shadow-sheet backdrop-blur-[12px]"
+    >
       <div class="shell flex h-16 items-center justify-between gap-4">
         <a
           href={`${prefix}index.html`}
-          class="flex min-h-11 shrink-0 items-center gap-2"
+          class="flex min-h-12 shrink-0 items-center gap-2"
           aria-label="BH Key Distribuidora — início"
         >
           <img src={`${prefix}img/logo-bhkey.png`} alt="" width="34" height="34" />
-          <span class="font-display text-base font-semibold leading-none sm:text-xl">
+          <span class="text-base font-bold leading-none tracking-[-0.02em] sm:text-xl">
             BH KEY <span class="text-green">Distribuidora</span>
           </span>
         </a>
@@ -63,10 +66,10 @@ const isCurrent = (href) =>
                   href={`${prefix}${item.href}`}
                   aria-current={isCurrent(item.href) ? 'page' : undefined}
                   class:list={[
-                    'flex min-h-11 items-center px-4 text-sm transition-colors',
+                    'flex min-h-12 items-center rounded-md px-4 text-sm transition-colors duration-200',
                     isCurrent(item.href)
-                      ? 'font-display font-semibold text-green'
-                      : 'text-paper/75 hover:text-paper',
+                      ? 'text-green'
+                      : 'text-paper-dim hover:bg-ink-raised hover:text-paper',
                   ]}
                 >{item.label}</a>
               </li>
@@ -83,39 +86,66 @@ const isCurrent = (href) =>
             <Icon name="whatsapp-logo" size={18} />
             Pedir no WhatsApp
           </a>
+          <!-- Botão de menu: 44×44 redondo, SVG inline (traço 1.5).
+               O rótulo e o ícone trocam por CSS conforme aria-expanded. -->
           <button
             type="button"
             id="menu-toggle"
             aria-expanded="false"
             aria-controls="menu-mobile"
-            class="btn btn--secundaria btn--compacto btn--lg-down"
+            class="btn-icone btn-icone--menu"
           >
-            <span class="sr-only">Abrir menu</span>
-            <span aria-hidden="true" class="flex flex-col gap-1">
-              <span class="block h-px w-4 bg-current"></span>
-              <span class="block h-px w-4 bg-current"></span>
-              <span class="block h-px w-4 bg-current"></span>
-            </span>
-            Menu
+            <span class="sr-only menu-repouso">Abrir menu</span>
+            <span class="sr-only menu-alternado">Fechar menu</span>
+            <svg
+              class="menu-repouso h-5 w-5"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+            <svg
+              class="menu-alternado h-5 w-5"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M6 6l12 12M18 6L6 18" />
+            </svg>
           </button>
         </div>
       </div>
 
-      <nav id="menu-mobile" aria-label="Principal (celular)" class="hidden border-t border-ink-line lg:hidden">
-        <ul class="shell py-2">
+      <!-- Folha do menu: cartão arredondado (16), recuado 16px das bordas,
+           superfície 1 e a sombra única. Em fluxo: sem JS ele continua aberto. -->
+      <nav id="menu-mobile" aria-label="Principal (celular)" class="hidden px-4 pb-4 lg:hidden">
+        <ul class="card overflow-hidden p-2 shadow-sheet">
           {nav.map((item) => (
             <li>
               <a
                 href={`${prefix}${item.href}`}
                 aria-current={isCurrent(item.href) ? 'page' : undefined}
                 class:list={[
-                  'flex min-h-11 items-center border-b border-ink-line/70 text-base',
-                  isCurrent(item.href) ? 'font-display font-semibold text-green' : 'text-paper/85',
+                  'flex min-h-12 items-center rounded-md px-3 text-base transition-colors duration-200',
+                  isCurrent(item.href)
+                    ? 'bg-ink-raised font-medium text-green'
+                    : 'text-paper-dim hover:bg-ink-raised hover:text-paper',
                 ]}
               >{item.label}</a>
             </li>
           ))}
-          <li class="py-4">
+          <li class="pt-2">
             <a href={linkWhatsApp()} class="btn btn--primaria btn--block" data-whatsapp>
               <Icon name="whatsapp-logo" size={20} />
               Pedir no WhatsApp
@@ -131,14 +161,15 @@ const isCurrent = (href) =>
 
     <!-- A régua que fecha o conteúdo é a borda inferior do último bloco:
          o rodapé não tem borda própria para não duplicar a linha. -->
-    <footer>
+    <!-- Rodapé: painel superfície 1, fios hairline, mesmo conteúdo do v2. -->
+    <footer class="bg-ink-soft">
       <div class="shell grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
         <div class="lg:col-span-4">
           <img src={`${prefix}img/logo-bhkey.png`} alt="BH Key Distribuidora" width="48" height="48" />
-          <p class="mt-4 max-w-[38ch] text-sm text-paper/70">
+          <p class="mt-4 max-w-[38ch] text-sm text-paper-dim">
             Distribuidora de material para chaveiro. Atendemos chaveiros e revendas em todo o Brasil.
           </p>
-          <p class="label-caps mt-4 text-paper/60">Preços sob consulta</p>
+          <p class="label-caps mt-4 text-paper-dim">Preços sob consulta</p>
         </div>
 
         <nav aria-label="Rodapé" class="lg:col-span-3">
@@ -148,7 +179,7 @@ const isCurrent = (href) =>
               <li>
                 <a
                   href={`${prefix}${item.href}`}
-                  class="flex min-h-11 items-center text-paper/75 transition-colors hover:text-paper"
+                  class="flex min-h-12 items-center text-paper-dim transition-colors duration-200 hover:text-paper"
                 >
                   {item.label}
                 </a>
@@ -163,7 +194,7 @@ const isCurrent = (href) =>
             <li>
               <a
                 href={linkWhatsApp()}
-                class="flex min-h-11 items-center gap-2 text-paper/75 transition-colors hover:text-paper"
+                class="flex min-h-12 items-center gap-2 text-paper-dim transition-colors duration-200 hover:text-paper"
                 data-whatsapp
               >
                 <Icon name="whatsapp-logo" size={16} />
@@ -173,7 +204,7 @@ const isCurrent = (href) =>
             <li>
               <a
                 href={INSTAGRAM_URL}
-                class="flex min-h-11 items-center gap-2 text-paper/75 transition-colors hover:text-paper"
+                class="flex min-h-12 items-center gap-2 text-paper-dim transition-colors duration-200 hover:text-paper"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -184,7 +215,7 @@ const isCurrent = (href) =>
             <li>
               <a
                 href={MAPA_URL}
-                class="flex min-h-11 items-center gap-2 text-paper/75 transition-colors hover:text-paper"
+                class="flex min-h-12 items-center gap-2 text-paper-dim transition-colors duration-200 hover:text-paper"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -197,12 +228,12 @@ const isCurrent = (href) =>
 
         <div class="lg:col-span-2">
           <p class="label-caps mb-4 text-green">Horário</p>
-          <p class="text-sm text-paper/75">{HORARIO}</p>
+          <p class="text-sm text-paper-dim">{HORARIO}</p>
         </div>
       </div>
 
       <div class="border-t border-ink-line">
-        <div class="shell flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-4 text-sm text-paper/60">
+        <div class="shell flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-4 text-sm text-paper-dim">
           <span>© {new Date().getFullYear()} BH Key Distribuidora</span>
           <span class="font-mono">Pagamento via PIX · Envio para todo o Brasil</span>
         </div>

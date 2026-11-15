@@ -6,7 +6,7 @@ const OUT = path.resolve('public/fonts');
 fs.mkdirSync(OUT, { recursive: true });
 
 const wants = [
-  ['clash-display', [600, 700], 'ClashDisplay'],
+  // v3: Clash Display saiu — Satoshi carrega os títulos (700) e o corpo (400/500).
   ['satoshi', [400, 500, 700], 'Satoshi'],
   ['azeret-mono', [400, 500], 'AzeretMono'],
 ];
